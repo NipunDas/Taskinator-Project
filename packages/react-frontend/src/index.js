@@ -3,11 +3,11 @@ import ReactDOMClient from "react-dom/client";
 import "./index.css";
 
 function MyApp() {
-  return (
-    <div>
-      <h1>Hello, React!</h1>
-    </div>
-  );
+    return (
+        <div>
+            <h1>Hello, React!</h1>
+        </div>
+    );
 }
 
 // Create the container

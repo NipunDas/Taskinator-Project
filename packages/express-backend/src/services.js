@@ -4,16 +4,18 @@ import taskListModel from "./task.js";
 
 mongoose.set("debug", true);
 
-mongoose.connect("mongodb://127.0.0.1:27017/taskinator", {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-}).catch((error) => console.log(error));
+mongoose
+    .connect("mongodb://127.0.0.1:27017/taskinator", {
+        useNewUrlParser: true,
+        useUnifiedTopology: true
+    })
+    .catch((error) => console.log(error));
 
 /* Gets all users */
 function getUsers(name) {
     let promise;
     if (name) {
-        promise = userModel.find({name: name});
+        promise = userModel.find({ name: name });
     } else {
         promise = userModel.find();
     }

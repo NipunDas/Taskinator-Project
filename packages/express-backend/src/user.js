@@ -5,7 +5,7 @@ const UserSchema = new mongoose.Schema(
         name: {
             type: String,
             required: true,
-            trim: true,
+            trim: true
         },
         taskList: {
             type: mongoose.Types.ObjectId,
