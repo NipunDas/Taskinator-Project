@@ -23,7 +23,7 @@ On VSCode specifically, you can configure the editor to format your code when sa
 the [instructions here](https://blog.yogeshchavan.dev/automatically-format-code-on-file-save-in-visual-studio-code-using-prettier).
 
 # Installing Bootstrap
-You can install React-Bootstrap via npm or yarn.
+You can install React-Bootstrap via npm or yarn (Install in react-frontend package).
 
 Using npm:
 
