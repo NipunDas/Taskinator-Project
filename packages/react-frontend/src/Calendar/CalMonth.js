@@ -162,13 +162,13 @@ const CalMonth = props => {
         transform: `translate(${calendarx - header_width / 10}px, ${calendary + num * 124}px)`,
         width: header_width / 10,
         height: 124,
-        fontSize: 20
+        fontSize: 16
       }}> 
       <p>
-      W{"\n"}
-      E{"\n"}
-      E{"\n"}
-      K{"\n"}
+      W<br />
+      E<br />
+      E<br />
+      K<br />
       {num}
       </p>
       </button>
