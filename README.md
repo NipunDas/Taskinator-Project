@@ -13,7 +13,7 @@ to install Prettier, along with other dependencies to make the formatting automa
 
 Now, with the configurations in the package.json file, Prettier should automatically reformat files
 when files are committed. Additionally, you can format the file yourself through the terminal by
-running the following npm script:
+running the following npm script:git
 
 `npm run format`
 
@@ -21,3 +21,14 @@ It can also be convenient to have the formatter work within your editor. To see 
 Prettier into your editor, take a look at [this link](https://prettier.io/docs/en/editors.html).
 On VSCode specifically, you can configure the editor to format your code when saving by following
 the [instructions here](https://blog.yogeshchavan.dev/automatically-format-code-on-file-save-in-visual-studio-code-using-prettier).
+
+# Installing Bootstrap
+You can install React-Bootstrap via npm or yarn (Install in react-frontend package).
+
+Using npm:
+
+`npm install react-bootstrap bootstrap`
+
+[Components](https://react-bootstrap.netlify.app/docs/components/accordion) can be imported within file like this
+
+`import Button from 'react-bootstrap/Button';`
