@@ -23,12 +23,21 @@ On VSCode specifically, you can configure the editor to format your code when sa
 the [instructions here](https://blog.yogeshchavan.dev/automatically-format-code-on-file-save-in-visual-studio-code-using-prettier).
 
 # Installing Bootstrap
+
 You can install React-Bootstrap via npm or yarn (Install in react-frontend package).
 
 Using npm:
 
 `npm install react-bootstrap bootstrap`
 
-[Components](https://react-bootstrap.netlify.app/docs/components/accordion) can be imported within file like this
+[Components](https://react-bootstrap.netlify.app/docs/components/accordion) can be imported within a JavaScript file like this
 
 `import Button from 'react-bootstrap/Button';`
+
+# Connecting to the cloud database
+
+To access the cloud database, you need a .env file with the environment variables `MONGODB_URI` for
+the backend server to connect to the database and `COMPASS_URI`, which you can put into MongoDB
+Compass to connect to the cloud database and see the data. The .env file should be put in the root of the express-backend package, and should not be checked into git. For the `MONGODB_URI` environment variable to be read, run the following command to install the dotenv package.
+
+`npm install dotenv`

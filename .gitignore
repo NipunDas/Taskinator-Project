@@ -1,2 +1,3 @@
 /node_modules
 /.vscode
+/packages/express-backend/.env
