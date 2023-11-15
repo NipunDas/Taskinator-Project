@@ -13,8 +13,13 @@ const curday = curdate.getDate();
 Notes for Implementation With Backend:
 CalMonth, CalWeek, and CalDay all input events in an array
 CalDay is a 1-D array input
-CalMonth and CalWeek have 2-D array inputs
-CalWeekSquare Currently Takes Time Inputs (Start Time and Duration) as minutes from 0
+  Input is title, start-time (in minutes*), duration (in minutes*), description, and color
+CalWeek is a 2-D array with 7 arrays, each for a day in the week
+  Input is title, start-time (in minutes*), duration (in minutes*), description, and color
+CalMonth are 6 arrays 42 entries long, each for a day in the monthly calendar
+  Input is title and color (There are an equal split of each)
+
+*CalWeekSquare Currently Takes Time Inputs (Start Time and Duration) as minutes from 0
 So To Go From Date to Time, date.getHours() * 60 + date.getMinutes()
 
 Other Notes:
