@@ -1,10 +1,6 @@
 # Backend Setup with MongoDB database and Express.js API
 
-Currently, the database is being hosted locally and has not been migrated to
-the cloud. To set up the DB locally, create a MongoDB database called
-"taskinator" with the collections "user_list" and "task_lists", and connect
-using mongosh or MongoDB Compass. Start the Express.js server with this command
-in the root of the express-backend package:
+See instructions in the README.md file in the root of this project for setting up the project to access the cloud database. Start the Express.js server with this command in the root of the express-backend package:
 
 `npx nodemon src/backend.js`
 
