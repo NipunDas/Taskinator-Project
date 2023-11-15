@@ -127,6 +127,11 @@ const CalWeek = props => {
   }
 
   /* ADD EVENT GET CODE */
+  titles[0].push("concert");
+  times[0].push(720);
+  durations[0].push(120);
+  descriptions[0].push("Yay");
+  colors[0].push("red");
 
   return (
     <div className="Main">

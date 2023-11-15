@@ -35,12 +35,7 @@ const CalWeekSquare = props => {
 
 	//Event inputs
 	/*Note for Implementing With Backend
-	TIMES ARE ASSUMED TO BE IN HOURS (So 1:30PM is 13.5 hours)
-	DURATIONS ARE ASSUMED TO BE IN HOURS (So 30 Minutes is 0.5 hours)
-	Ideally, both of these should be real times
-	However, the decimal hours are used to calculate the proper height and position
-	Of the event square on the calendar itself and thus must be calculated at some point
-	Should the time and durations format be changed
+	times and durations are assumed to be in minutes
 	*/
 	const titles = props.titles;
 	const times = props.times;				
@@ -49,14 +44,19 @@ const CalWeekSquare = props => {
 	const colors = props.colors;
 	var toMap;
 	var hasevent = false;
+	var percentduration;
+	//If there are events to be displayed
 	if(titles != null && titles.length > 0){
 		hasevent = true;
 		const len = titles.length;
+		//Used for looping in div
 		toMap = new Array(len);
+		//Used for calculating the height of the event square
+		percentduration = new Array(len);
 		for(var i = 0; i < len; i++){
 			toMap[i] = i;
+			percentduration[i] = durations[i] / 60;
 		}
-		console.info(len)
 	}
 
 	//Trunacte Function
@@ -73,14 +73,14 @@ const CalWeekSquare = props => {
 		const passedduration = durations[num];
 		const passedendtime = passedtime + passedduration;
 		//Hours 
-		var passedbeginhour = Math.floor(passedtime);
-		var passedendhour = Math.floor(passedendtime);
+		var passedbeginhour = Math.floor(passedtime / 60);
+		var passedendhour = Math.floor(passedendtime / 60);
 		var beginAM = " AM";
 		var endAM = " AM";
 		//Minutes
-		var beginminutes = Math.floor((passedtime - passedbeginhour) * 60);
+		var beginminutes = Math.floor(passedtime % 60);
 		if(beginminutes < 10) beginminutes = "0" + beginminutes;
-		var endminutes = Math.floor((passedendtime - passedendhour) * 60);
+		var endminutes = Math.floor(passedendtime % 60);
 		if(endminutes < 10) endminutes = "0" + endminutes;
 		//Format hours
 		if(passedbeginhour == 0) passedbeginhour = 12;
@@ -153,10 +153,10 @@ const CalWeekSquare = props => {
 		  	key = {num}	
 		  	style={{ background: colors[num], 
 			position: 'absolute', 
-			transform: `translate(${xpos}px, ${ypos + Math.floor(hourheight * (times[num] - hourbegin))}px)`,
+			transform: `translate(${xpos}px, ${ypos + Math.floor(hourheight * (times[num] - hourbegin * 60) / 60)}px)`,
 			border: 'solid',
 			width: width,
-			height: hourheight * durations[num],
+			height: hourheight * percentduration[num],
 			overflow: 'hidden',
 			}}>      
 			<p 

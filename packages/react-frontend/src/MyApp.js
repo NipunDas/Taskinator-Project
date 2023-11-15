@@ -14,9 +14,8 @@ Notes for Implementation With Backend:
 CalMonth, CalWeek, and CalDay all input events in an array
 CalDay is a 1-D array input
 CalMonth and CalWeek have 2-D array inputs
-CalWeekSquare Currently Takes Time Inputs (Start Time and Duration) as hours (ie 0.5 hours)
-If changing the time format, the hour values still must be calculated for the events to be displayed properly
-CalDay and CalWeek Likely Needs a Dynamic System For Determining the Start and End Hour Base On The Events
+CalWeekSquare Currently Takes Time Inputs (Start Time and Duration) as minutes from 0
+So To Go From Date to Time, date.getHours() * 60 + date.getMinutes()
 
 Other Notes:
 There are many parts of each file that aren't used by the file and thus can be removed
