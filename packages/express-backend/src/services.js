@@ -1,11 +1,14 @@
 import mongoose from "mongoose";
 import userModel from "./user.js";
 import taskListModel from "./task.js";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 mongoose.set("debug", true);
 
 mongoose
-    .connect("mongodb://127.0.0.1:27017/taskinator", {
+    .connect(process.env.MONGODB_URI, {
         useNewUrlParser: true,
         useUnifiedTopology: true
     })
