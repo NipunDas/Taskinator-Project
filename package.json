@@ -4,7 +4,8 @@
     "description": "",
     "main": "index.js",
     "scripts": {
-        "lint": "prettier --write './**/*.{js,jsx,ts,tsx,css,md,json}' --config ./.prettierrc",
+        "lint": "npx prettier --check .",
+        "format": "prettier --write './**/*.{js,jsx,ts,tsx,css,md,json,html}' --config ./.prettierrc",
         "test": "echo \"Error: no test specified\"",
         "dev": "nodemon packages/express-backend/src/backend.js",
         "start": "node packages/express-backend/src/backend.js"
@@ -14,8 +15,8 @@
     "dependencies": {
         "create-react-app": "^5.0.1",
         "husky": "^8.0.3",
-        "lint-staged": "^15.0.2",
-        "prettier": "^3.0.3"
+        "lint-staged": "^15.1.0",
+        "prettier": "^3.1.0"
     },
     "workspaces": [
         "packages/*"
