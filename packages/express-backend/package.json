@@ -3,12 +3,12 @@
     "version": "1.0.0",
     "description": "",
     "type": "module",
-    "main": "backend.js",
+    "main": "src/backend.js",
     "scripts": {
         "test": "echo \"Error: no test specified\"",
         "lint": "npx prettier --check .",
-        "dev": "nodemon packages/express-backend/src/backend.js",
-        "start": "node packages/express-backend/src/backend.js"
+        "dev": "nodemon src/backend.js",
+        "start": "node src/backend.js"
     },
     "author": "",
     "license": "ISC",
