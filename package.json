@@ -6,9 +6,7 @@
     "scripts": {
         "lint": "npx prettier --check .",
         "format": "prettier --write './**/*.{js,jsx,ts,tsx,css,md,json,html}' --config ./.prettierrc",
-        "test": "echo \"Error: no test specified\"",
-        "dev": "nodemon packages/express-backend/src/backend.js",
-        "start": "node packages/express-backend/src/backend.js"
+        "test": "echo \"Error: no test specified\""
     },
     "author": "",
     "license": "ISC",

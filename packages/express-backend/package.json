@@ -6,7 +6,9 @@
     "main": "backend.js",
     "scripts": {
         "test": "echo \"Error: no test specified\"",
-        "lint": "npx prettier --check ."
+        "lint": "npx prettier --check .",
+        "dev": "nodemon packages/express-backend/src/backend.js",
+        "start": "node packages/express-backend/src/backend.js"
     },
     "author": "",
     "license": "ISC",
