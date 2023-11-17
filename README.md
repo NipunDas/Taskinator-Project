@@ -47,3 +47,9 @@ Using npm:
 To host the backend server locally, you will need to connect to the cloud database. You need a .env file with the environment variables `MONGODB_URI`, for the backend server to connect to the database, and `COMPASS_URI`, which you can put into MongoDB Compass to connect to the cloud database and access the data in Compass. The .env file should be put in the root of the express-backend package, and should not be checked into git. For the `MONGODB_URI` environment variable to be read, run the following command to install the dotenv package.
 
 `npm install dotenv`
+
+# CORS dependency
+
+CORS is a required dependency for the front end to access the cloud database. Run this command on the root of the project to install
+
+`npm instsall cors`
