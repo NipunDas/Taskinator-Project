@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from "react";
 import CalendarSquare from './CalMonthSquare';
 import { useParams, Link } from 'react-router-dom';
+import { Button } from "react-bootstrap";
 
 
 //Add events by using the events0, events1, and events2 arrays
@@ -196,7 +197,13 @@ const CalMonth = props => {
         cy = {calendary}
         weekdays = {weekdays}
       />)}
+      <div style={{ position: 'absolute', top: '10px', right: '10px' }}>
+        <Link to="/taskList">
+          <Button variant="success">Back to task list</Button>
+        </Link>
+      </div>
     </div>
+    
   );
 }
 

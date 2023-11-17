@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from "react";
 import CalWeekSquare from './CalWeekSquare';
 import { useParams, Link } from 'react-router-dom';
+import Button from "react-bootstrap/esm/Button";
 
 //To add events, place paramters in the following arrays
 //titles = Title of the event
@@ -228,6 +229,11 @@ const CalWeek = props => {
       colors = {colors}
       />
       )
+      <div style={{ position: 'absolute', top: '10px', right: '10px' }}>
+        <Link to="/taskList">
+          <Button variant="success">Back to task list</Button>
+        </Link>
+      </div>
     </div>
   );
 }

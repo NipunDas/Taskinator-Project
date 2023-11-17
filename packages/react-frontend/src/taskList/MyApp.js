@@ -126,9 +126,16 @@ function MyTaskList() {
             ></Grid>
             <Row className="mt-4">
                 <Col>
-                <Link to="/taskAdd">
-            <Button variant="success">Add New Task</Button>
-          </Link>
+                    <Link to="/taskAdd">
+                        <Button variant="success">Add New Task</Button>
+                    </Link>
+                </Col>
+                <Col>
+                    <div>
+                        <Link to="/">
+                            <Button variant="success">Back to calendar</Button>
+                        </Link>
+                    </div>
                 </Col>
             </Row>
         </div>

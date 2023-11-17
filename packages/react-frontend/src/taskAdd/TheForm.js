@@ -2,6 +2,7 @@
 import React, {useState} from 'react';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
+import { Link } from "react-router-dom";
 
 function TheForm(props) {
   const [person, setPerson] = useState(
@@ -123,9 +124,16 @@ function TheForm(props) {
         />
       </Form.Group>
 
-      <Button variant="primary" onClick={submitForm}>
-        Submit
-      </Button>
+      <div style={{ marginBottom: '10px' }}>
+        <Button variant="primary" onClick={submitForm}>
+          Submit
+        </Button>
+      </div>
+      <div>
+        <Link to="/taskList">
+          <Button variant="success">Back to task list</Button>
+        </Link>
+      </div>
     </Form>
   );
 }
