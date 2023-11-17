@@ -36,8 +36,18 @@ const CalWeek = props => {
     return linkYear + "-" + linkMonth + "-" + linkDay;
   }
 
+  function updateList(task){
+    setTasks([...tasks, task]);
+  }
 
-  //Setting Up Constants
+  function sameDay(d1, d2) {
+  return d1.getFullYear() === d2.getFullYear() &&
+    d1.getMonth() === d2.getMonth() &&
+    d1.getDate() === d2.getDate();
+  }
+
+  //Constants
+  const [tasks, setTasks] = useState([]);
   const [characters, setCharacters] = useState([]);
   const weekdays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
   const months = ['January', 'February', 'March', 
@@ -84,8 +94,8 @@ const CalWeek = props => {
   //Calendar Position
   const calendarx = 90;
   const calendary = 200;
-  const hourbegin = 7;  //What hour the daily calendar begins at
-  const hourend = 21;   //What hour the daily calendar ends at
+  const hourbegin = 0;  //What hour the daily calendar begins at
+  const hourend = 24;   //What hour the daily calendar ends at
   const timewidth = 80;
   const daywidth = 160;
 
@@ -112,6 +122,45 @@ const CalWeek = props => {
   var colors = []
 
   /* ADD EVENT GET CODE */
+  const samplecolors = ['red', 'orange', 'yellow', 'green', 'blue', 'purple'];
+  /* ADD EVENT GET CODE */
+  var colorindex = 0;
+  for(var j = 0; j < tasks.length; j++){
+    var task = tasks[j];
+    if(!task['name'] || !task['date']) continue;
+    var s = task['date'];
+    var startDate = new Date(s.replace(/-/g,'/').replace('T',' '));
+    if(!sameDay(new Date(startDate), date)) continue;
+    var y = 0;
+    while(titles[y] != null){
+      y += 1;
+    }
+    titles[y] = task['name'];
+    times[y] = startDate.getHours() * 60 + startDate.getMinutes();
+    durations[y] = task['duration'];
+    descriptions[y] = task['desc']
+    colors[y] = samplecolors[colorindex];
+    colorindex += 1;
+    if(colorindex >= 7) colorindex = 0
+  }
+
+  function fetchTasks() {
+    const promise = fetch(
+        "http://localhost:8000/task-lists/65553647a73a1b75066a47ab"
+    );
+    console.log(promise);
+    return promise;
+  }
+
+  useEffect(() => {
+      console.log("hi");
+      fetchTasks()
+          .then((res) => res.json())
+          .then((json) => setTasks(json["tasks"]))
+          .catch((error) => {
+              console.log(error);
+          });
+  }, []);
 
   return (
     <div className="Main">

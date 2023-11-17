@@ -33,7 +33,18 @@ const CalMonth = props => {
     return linkYear + "-" + linkMonth + "-" + linkDay;
   }
 
+  function updateList(task){
+    setTasks([...tasks, task]);
+  }
+
+  function sameDay(d1, d2) {
+  return d1.getFullYear() === d2.getFullYear() &&
+    d1.getMonth() === d2.getMonth() &&
+    d1.getDate() === d2.getDate();
+  }
+
   //Constants
+  const [tasks, setTasks] = useState([]);
   const weekdays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
   const months = ['January', 'February', 'March', 
                    'April', 'May', 'June', 
@@ -104,6 +115,45 @@ const CalMonth = props => {
 
 
   /* ADD EVENT GET CODE */
+  for(var j = 0; j < tasks.length; j++){
+    for (var i = 0; i < 42; i++){
+      var task = tasks[j];
+      if(!task['name'] || !task['date']) continue;
+      var s = task['date'];
+      var startDate = new Date(s.replace(/-/g,'/').replace('T',' '));
+      if(!sameDay(new Date(startDate), displaydays[i])) continue;
+      if (events0[i] == null){
+        events0[i] = task['name'];
+        eventcolors0[i] = 'red';
+      }
+      else if (events1[i] == null){
+        events1[i] = task['name'];
+        eventcolors1[i] = 'blue';
+      }
+      else if (events2[i] == null){
+        events0[2] = task['name'];
+        eventcolors2[i] = 'yellow';
+      }
+    }
+  }
+
+  function fetchTasks() {
+    const promise = fetch(
+        "http://localhost:8000/task-lists/65553647a73a1b75066a47ab"
+    );
+    console.log(promise);
+    return promise;
+  }
+
+  useEffect(() => {
+      console.log("hi");
+      fetchTasks()
+          .then((res) => res.json())
+          .then((json) => setTasks(json["tasks"]))
+          .catch((error) => {
+              console.log(error);
+          });
+  }, []);
 
   return (
     <div className="Main">

@@ -30,7 +30,7 @@ function MyCalendar() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path = "/" element = {<CalMonth/>} />
+        <Route path = "/" element = {<Navigate replace to = {"month/" + curyear + "-" + curmonth + "-" + curday} />}/>
         <Route path = "week" element={<Navigate replace to = {curyear + "-" + curmonth + "-" + curday} />} />
         <Route path = "week/:newdate" element = {<CalWeek/>} />
         <Route path = "month" element={<Navigate replace to = {curyear + "-" + curmonth + "-" + curday} />} />

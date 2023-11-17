@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 function TheForm(props) {
   const [person, setPerson] = useState(
      {
-        title: "",
+        name: "",
         description: "",
         priority: "",
         tags: "",
@@ -47,7 +47,7 @@ function TheForm(props) {
 
     // Reset the form after submission
     setPerson({
-      title: '',
+      name: '',
       description: '',
       priority: '',
       tags: '',
@@ -62,9 +62,9 @@ function TheForm(props) {
         <Form.Label>Title</Form.Label>
         <Form.Control
           type="text"
-          name="title"
-          placeholder="Enter title"
-          value={person.title}
+          name="name"
+          placeholder="Enter name"
+          value={person.name}
           onChange={handleChange}
         />
       </Form.Group>
@@ -105,7 +105,7 @@ function TheForm(props) {
       <Form.Group controlId="formBasicDate">
         <Form.Label>Date</Form.Label>
         <Form.Control
-          type="text"
+          type="datetime-local"
           name="date"
           placeholder="Enter date"
           value={person.date}
@@ -114,7 +114,7 @@ function TheForm(props) {
       </Form.Group>
 
       <Form.Group controlId="formBasicDuration">
-        <Form.Label>Duration</Form.Label>
+        <Form.Label>Duration (In Minutes) </Form.Label>
         <Form.Control
           type="text"
           name="duration"
