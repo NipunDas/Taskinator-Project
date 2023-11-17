@@ -2,7 +2,6 @@
 import express from "express";
 import cors from "cors";
 import Services from "./services.js";
-import cors from "cors";
 
 const app = express();
 const port = 8000;
