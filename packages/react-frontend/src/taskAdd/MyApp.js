@@ -4,7 +4,7 @@ import TheForm from './TheForm';
 import MyTable from "./MyTableHeader";
 
 
-function MyApp() {
+function MyAddTask() {
     const [characters, setCharacters] = useState([]);
       
       function removeOneCharacter (index) {
@@ -26,4 +26,4 @@ function MyApp() {
     );
 }
 
-export default MyApp;
+export default MyAddTask;
