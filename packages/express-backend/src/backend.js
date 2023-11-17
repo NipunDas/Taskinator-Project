@@ -1,5 +1,6 @@
 // backend.js
 import express from "express";
+import cors from "cors";
 import Services from "./services.js";
 import cors from "cors";
 
@@ -136,6 +137,6 @@ app.delete("/users/:id", (req, res) => {
         });
 });
 
-app.listen(port, () => {
+app.listen(process.env.PORT || port, () => {
     console.log(`Example app listening at http://localhost:${port}`);
 });
