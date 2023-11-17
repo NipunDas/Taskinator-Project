@@ -3,15 +3,9 @@ import ReactDOMClient from "react-dom/client";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Button from "react-bootstrap/Button";
 import "./index.css";
+import MyApp from "./taskAdd/MyApp";
 
-function MyApp() {
-    return (
-        <div>
-            <Button>works</Button>
-            <h1>Hello, React!</h1>
-        </div>
-    );
-}
+
 
 // Create the container
 const container = document.getElementById("root");
