@@ -1,5 +1,5 @@
-import React, {useState, useEffect} from "react";
-import {BrowserRouter, Routes, Route, Navigate} from 'react-router-dom';
+import React from "react";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import CalMonth from "./calendar/CalMonth";
 import CalWeek from "./calendar/CalWeek";
 import CalDay from "./calendar/CalDay";
@@ -27,21 +27,60 @@ Other Notes:
 There are many parts of each file that aren't used by the file and thus can be removed
 */
 function MyCalendar() {
-  return (
-    <BrowserRouter>
-      <Routes>
-        <Route path = "/" element = {<Navigate replace to = {"month/" + curyear + "-" + curmonth + "-" + curday} />}/>
-        <Route path = "week" element={<Navigate replace to = {curyear + "-" + curmonth + "-" + curday} />} />
-        <Route path = "week/:newdate" element = {<CalWeek/>} />
-        <Route path = "month" element={<Navigate replace to = {curyear + "-" + curmonth + "-" + curday} />} />
-        <Route path = "month/:newdate" element = {<CalMonth/>} />
-        <Route path = "day" element={<Navigate replace to = {curyear + "-" + curmonth + "-" + curday} />} />
-        <Route path = "day/:newdate" element = {<CalDay/>} />
-        <Route path = "taskList" element = {<MyTaskList/>} />
-        <Route path = "taskAdd" element = {<MyAddTask/>} />
-      </Routes>
-    </BrowserRouter>
+    return (
+        <BrowserRouter>
+            <Routes>
+                <Route
+                    path="/"
+                    element={
+                        <Navigate
+                            replace
+                            to={
+                                "month/" +
+                                curyear +
+                                "-" +
+                                curmonth +
+                                "-" +
+                                curday
+                            }
+                        />
+                    }
+                />
+                <Route
+                    path="week"
+                    element={
+                        <Navigate
+                            replace
+                            to={curyear + "-" + curmonth + "-" + curday}
+                        />
+                    }
+                />
+                <Route path="week/:newdate" element={<CalWeek />} />
+                <Route
+                    path="month"
+                    element={
+                        <Navigate
+                            replace
+                            to={curyear + "-" + curmonth + "-" + curday}
+                        />
+                    }
+                />
+                <Route path="month/:newdate" element={<CalMonth />} />
+                <Route
+                    path="day"
+                    element={
+                        <Navigate
+                            replace
+                            to={curyear + "-" + curmonth + "-" + curday}
+                        />
+                    }
+                />
+                <Route path="day/:newdate" element={<CalDay />} />
+                <Route path="taskList" element={<MyTaskList />} />
+                <Route path="taskAdd" element={<MyAddTask />} />
+            </Routes>
+        </BrowserRouter>
     );
- }
+}
 
- export default MyCalendar;
+export default MyCalendar;

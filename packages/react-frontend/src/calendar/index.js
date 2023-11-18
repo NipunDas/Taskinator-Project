@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOMClient from "react-dom/client";
-import 'bootstrap/dist/css/bootstrap.min.css';
-import Button from 'react-bootstrap/Button';
+import "bootstrap/dist/css/bootstrap.min.css";
+import Button from "react-bootstrap/Button";
 import "./index.css";
 import MyApp from "./MyApp";
 
