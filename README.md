@@ -53,3 +53,7 @@ To host the backend server locally, you will need to connect to the cloud databa
 CORS is a required dependency for the front end to access the cloud database. Run this command on the root of the project to install
 
 `npm instsall cors`
+
+# Installing React Router
+
+`npm install react-router-dom`
