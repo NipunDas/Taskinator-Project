@@ -3,6 +3,8 @@ import CalendarSquare from "./CalMonthSquare";
 import { useParams, Link } from "react-router-dom";
 import { Button } from "react-bootstrap";
 
+const api_url = "https://taskinator-api.azurewebsites.net";
+
 //Add events by using the events0, events1, and events2 arrays
 //Add colors to events by using the respective eventcolors arrays
 //Arrays are assumed to be in the same order
@@ -133,7 +135,7 @@ const CalMonth = (props) => {
             var s = task["date"];
             var startDate = new Date(s.replace(/-/g, "/").replace("T", " "));
             if (!sameDay(new Date(startDate), displaydays[i])) continue;
-            if (events0[i] == null) {
+            if (events0[i] === null) {
                 events0[i] = task["name"];
                 eventcolors0[i] = "red";
             } else if (events1[i] == null) {
@@ -147,15 +149,11 @@ const CalMonth = (props) => {
     }
 
     function fetchTasks() {
-        const promise = fetch(
-            "http://localhost:8000/task-lists/65553647a73a1b75066a47ab"
-        );
-        console.log(promise);
+        const promise = fetch(`${api_url}/task-lists/65553647a73a1b75066a47ab`);
         return promise;
     }
 
     useEffect(() => {
-        console.log("hi");
         fetchTasks()
             .then((res) => res.json())
             .then((json) => setTasks(json["tasks"]))
@@ -177,7 +175,6 @@ const CalMonth = (props) => {
                 }}
             >
                 <p
-                    align="justify"
                     align="center"
                     style={{
                         fontSize: 40,

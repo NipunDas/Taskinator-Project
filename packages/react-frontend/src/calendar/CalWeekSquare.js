@@ -133,7 +133,6 @@ const CalWeekSquare = (props) => {
                 }}
             >
                 <p
-                    align="justify"
                     align="center"
                     style={{
                         fontSize: 16,
@@ -197,7 +196,6 @@ const CalWeekSquare = (props) => {
                         }}
                     >
                         <p
-                            align="justify"
                             align="left"
                             style={{
                                 fontSize: 16,

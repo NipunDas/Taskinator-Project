@@ -3,6 +3,8 @@ import CalWeekSquare from "./CalWeekSquare";
 import { useParams, Link } from "react-router-dom";
 import { Button } from "react-bootstrap";
 
+const api_url = "https://taskinator-api.azurewebsites.net";
+
 //To add events, place paramters in the following 2D Arrays
 //titles = Title of the event
 //times = Time of the event
@@ -172,9 +174,7 @@ const CalWeek = (props) => {
     }
 
     function fetchTasks() {
-        const promise = fetch(
-            "http://localhost:8000/task-lists/65553647a73a1b75066a47ab"
-        );
+        const promise = fetch(`${api_url}/task-lists/65553647a73a1b75066a47ab`);
         console.log(promise);
         return promise;
     }
@@ -202,7 +202,6 @@ const CalWeek = (props) => {
                 }}
             >
                 <p
-                    align="justify"
                     align="center"
                     style={{
                         fontSize: 40,
@@ -303,7 +302,6 @@ const CalWeek = (props) => {
                     }}
                 >
                     <p
-                        align="justify"
                         align="center"
                         style={{
                             fontSize: 16,

@@ -4,6 +4,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import MyCalendar from "./MyApp";
 
 // Create the container
+
 const container = document.getElementById("root");
 
 // Create a root

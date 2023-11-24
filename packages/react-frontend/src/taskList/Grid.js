@@ -50,7 +50,6 @@ function GridBody(props) {
 }
 
 function Grid(props) {
-    console.log("taskData:", props.taskData);
     return (
         <div>
             <GridHeader name={props.name} />

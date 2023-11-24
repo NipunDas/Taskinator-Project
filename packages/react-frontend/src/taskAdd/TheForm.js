@@ -4,6 +4,8 @@ import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import { Link } from "react-router-dom";
 
+const api_url = "https://taskinator-api.azurewebsites.net";
+
 function TheForm(props) {
     const [person, setPerson] = useState({
         name: "",
@@ -25,7 +27,7 @@ function TheForm(props) {
     const submitForm = async () => {
         try {
             const response = await fetch(
-                "http://localhost:8000/task-lists/65553647a73a1b75066a47ab/tasks",
+                `${api_url}/task-lists/65553647a73a1b75066a47ab/tasks`,
                 {
                     method: "POST",
                     headers: {

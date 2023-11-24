@@ -55,7 +55,7 @@ const CalMonthSquare = (props) => {
 
     //Event1
     hasev[0] = false;
-    if (props.event0 !== null && props.event0 !== "") {
+    if (props.event0 !== undefined && props.event0 !== "") {
         event[0] = truncate(props.event0, 12);
         hasev[0] = true;
     }
@@ -63,7 +63,7 @@ const CalMonthSquare = (props) => {
 
     //Event2
     hasev[1] = false;
-    if (props.event1 !== null && props.event1 !== "") {
+    if (props.event1 !== undefined && props.event1 !== "") {
         event[1] = truncate(props.event1, 12);
         hasev[1] = true;
     }
@@ -71,7 +71,7 @@ const CalMonthSquare = (props) => {
 
     //Event3
     hasev[2] = false;
-    if (props.event2 !== null && props.event2 !== "") {
+    if (props.event2 !== undefined && props.event2 !== "") {
         event[2] = truncate(props.event2, 12);
         hasev[2] = true;
     }
@@ -89,7 +89,6 @@ const CalMonthSquare = (props) => {
                 }}
             >
                 <p
-                    align="justify"
                     align="center"
                     style={{
                         fontSize: 16,
@@ -114,7 +113,6 @@ const CalMonthSquare = (props) => {
                     }}
                 >
                     <p
-                        align="justify"
                         align="center"
                         style={{
                             fontSize: 16,
@@ -140,7 +138,6 @@ const CalMonthSquare = (props) => {
                     }}
                 >
                     <p
-                        align="justify"
                         align="center"
                         style={{
                             fontSize: 16,
@@ -166,7 +163,6 @@ const CalMonthSquare = (props) => {
                     }}
                 >
                     <p
-                        align="justify"
                         align="center"
                         style={{
                             fontSize: 16,
@@ -192,7 +188,6 @@ const CalMonthSquare = (props) => {
                     }}
                 >
                     <p
-                        align="justify"
                         align="center"
                         style={{
                             fontSize: 16,

@@ -5,8 +5,10 @@ import Col from "react-bootstrap/Col";
 import Button from "react-bootstrap/Button";
 import { Link } from "react-router-dom";
 
+const api_url = "https://taskinator-api.azurewebsites.net";
+
 /* function postUser(person) {
-    const promise = fetch("http://localhost:8000/users", {
+    const promise = fetch(`${api_url}/users`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -35,16 +37,13 @@ function MyTaskList() {
     }
 
     function fetchTasks() {
-        const promise = fetch(
-            "http://localhost:8000/task-lists/65553647a73a1b75066a47ab"
-        );
-        console.log(promise);
+        const promise = fetch(`${api_url}/task-lists/65553647a73a1b75066a47ab`);
         return promise;
     }
 
     function deleteTask(id) {
         const promise = fetch(
-            `http://localhost:8000/task-lists/65553647a73a1b75066a47ab/tasks/${id}`,
+            `${api_url}/task-lists/65553647a73a1b75066a47ab/tasks/${id}`,
             {
                 method: "DELETE"
             }
@@ -68,20 +67,16 @@ function MyTaskList() {
 
     function filterTasks() {
         var value = document.getElementById("filter").value;
-        console.log(value);
         if (value !== "All") {
             filteredTasks = tasks.filter((task) => task.tags.includes(value));
             setFilteredTasks(filteredTasks);
-            console.log(filteredTasks);
         } else {
             filteredTasks = tasks;
             setFilteredTasks(filteredTasks);
-            console.log(filteredTasks);
         }
     }
 
     useEffect(() => {
-        console.log("hi");
         fetchTasks()
             .then((res) => res.json())
             .then((json) => setTasks(json["tasks"]))
