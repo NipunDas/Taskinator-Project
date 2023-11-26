@@ -38,8 +38,8 @@ function DragAndDropComponent(props) {
             return;
         }
 
-        console.log("source.droppableId: " + source.droppableId);
-        console.log("destination.droppableId: " + destination.droppableId);
+        //console.log("source.droppableId: " + source.droppableId);
+        //console.log("destination.droppableId: " + destination.droppableId);
 
         const start = list[source.droppableId]; //TODO  UPDATE
         const finish = list[destination.droppableId]; //TODO  UPDATE
@@ -68,10 +68,14 @@ function DragAndDropComponent(props) {
         };
 
         setList(newData); //TODO  UPDATE
+
+        // Notify the parent component about the move
+        //const cardId = removed.id; // ID of the moved card
+        props.updateTask(removed, destination.droppableId);
     };
 
-    console.log("what is the list?    ");
-    console.log(list);
+    // console.log("what is the list?    ");
+    // console.log(list);
     return (
         <DragDropContext onDragEnd={onDragEnd}>
             {Object.keys(list).map((listKey, index, array) => ( //TODO  UPDATE

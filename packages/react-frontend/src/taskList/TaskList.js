@@ -66,6 +66,63 @@ function MyTaskList() {
         });
     }
 
+    function updateTask(task, newListId) {
+        // Convert newListId to the corresponding numerical value
+        const listIdMap = {
+            high: 1,
+            medium: 2,
+            low: 3
+        };
+
+        const numericListId = listIdMap[newListId];
+
+        // Prepare the task data to be sent in the request body
+        const taskData = {
+            name: task.name,
+            description: task.description,
+            tags: task.tags,
+            priority: numericListId,
+            _id: task.id,
+        };
+
+        console.log("DATAAA SENT");
+        console.log(JSON.stringify(taskData));
+
+        const promise = fetch(
+            `${api_url}/task-lists/65553647a73a1b75066a47ab/tasks`,
+            {
+                method: "PUT",
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(taskData)
+            }
+        );
+
+        return promise;
+    }
+
+    function onTaskMove(task, newListId) {
+        console.log(`Card with ID ${task.id} moved to ${newListId}`);
+
+        // console.log(taskId);
+
+        updateTask(task, newListId)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log('Success:', data);
+            })
+            .catch((error) => console.error('Error:', error));
+        sleep(500).then(() => {
+            filterTasks();
+        });
+    }
+
     function filterTasks() {
         var value = document.getElementById("filter").value;
         if (value !== "All") {
@@ -104,6 +161,7 @@ function MyTaskList() {
             </select>
             <DragAndDropComponent
                 taskData={filteredTasks}
+                updateTask={onTaskMove}
                 removeTask={removeTask}
             ></DragAndDropComponent>
             <Row className="mt-4">
