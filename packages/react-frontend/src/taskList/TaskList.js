@@ -116,21 +116,35 @@ function MyTaskList() {
             })
             .then(data => {
                 console.log('Success:', data);
+
+                fetchTasks()
+                    .then((res) => res.json())
+                    .then((json) => setTasks(json["tasks"]))
+                    .catch((error) => {
+                        console.log(error);
+                    });
+                fetchTasks()
+                    .then((res) => res.json())
+                    .then((json) => setFilteredTasks(json["tasks"]))
+                    .catch((error) => {
+                        console.log(error);
+                    });
             })
             .catch((error) => console.error('Error:', error));
-        sleep(500).then(() => {
-            filterTasks();
-        });
     }
 
     function filterTasks() {
         var value = document.getElementById("filter").value;
         if (value !== "All") {
             filteredTasks = tasks.filter((task) => task.tags.includes(value));
+
             setFilteredTasks(filteredTasks);
         } else {
             filteredTasks = tasks;
             setFilteredTasks(filteredTasks);
+
+            console.log("GET NEW FILTERED DATA");
+            console.log(filteredTasks);
         }
     }
 
