@@ -4,37 +4,6 @@ import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button'
 import "./styles.css";
 
-const initialData = {
-    high: [
-        { id: 'high-1', description: 'Finish Science', name: 'Science Homework '},
-        { id: 'high-2', description: 'Go To Work', name: 'Finish Work '},
-        { id: 'high-3', description: 'Finish Science', name: 'Science Homework '},
-        { id: 'high-4', description: 'Math HW4', name: 'a ' },
-
-    ],
-    medium: [
-        { id: 'medium-1', description: 'English HW', name: 'b ' },
-        { id: 'medium-2', description: 'English HW 3', name: 'c ' },
-
-    ],
-    low: [
-        { id: 'low-1', description: 'Go To Work', name: 'd ' },
-        { id: 'low-2', description: 'Attend Meeting', name: 'e ' },
-    ]
-};
-
-const testData = {
-    high: [
-        { description: "Finish Science", name: "Science Homework", priority: 1, tags: ['School'], _id: "655404fb657f32d7a343f97a"},
-        { description: "work out", name: "Go To Gym", priority: 1, tags: ['All','Personal'], _id: "655404fb657f32d7a343f97d"}
-    ],
-    medium: [
-        { description: "Finish English", name: "English Homework", priority: 2, tags: ['School'], _id: "655404fb657f32d7a343f97b"}
-    ],
-    low: [
-        {description: "Finish Work", name: "Go To Work", priority: 3, tags: ['Work'], _id: "655404fb657f32d7a343f97c" },
-    ]
-};
 
 function DragAndDropComponent(props) {
     // const [data, setData] = useState(testData);
@@ -105,31 +74,36 @@ function DragAndDropComponent(props) {
     console.log(list);
     return (
         <DragDropContext onDragEnd={onDragEnd}>
-            {Object.keys(list).map((listKey) => ( //TODO  UPDATE
-                <Droppable droppableId={listKey} key={listKey}>
-                    {(provided) => (
-                        <div {...provided.droppableProps} ref={provided.innerRef} className="list">
-                            <h3>{listKey.charAt(0).toUpperCase() + listKey.slice(1)} Priority</h3>
-                            {list[listKey].map((item, index) => ( //TODO  UPDATE
-                                <Draggable key={item.id} draggableId={item.id} index={index}>
-                                    {(provided) => (
-                                        <div ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps} className="item">
-                                            <Card key={index} className="mb-2 fixed-size-card">
-                                                <Card.Body>
-                                                    <Card.Title>{item.name}</Card.Title>
-                                                    <Card.Subtitle>{item.description}</Card.Subtitle>
-                                                    <Card.Text>{item.tags.join(', ')}</Card.Text>
-                                                    <Button variant="primary" onClick={() => props.removeTask(item.id)}>Remove</Button>
-                                                </Card.Body>
-                                            </Card>
-                                        </div>
-                                    )}
-                                </Draggable>
-                            ))}
-                            {provided.placeholder}
-                        </div>
-                    )}
-                </Droppable>
+            {Object.keys(list).map((listKey, index, array) => ( //TODO  UPDATE
+                <React.Fragment key={listKey}>
+                    <div key={listKey} className="priority-section">
+                        <h3>{listKey.charAt(0).toUpperCase() + listKey.slice(1)} Priority</h3>
+                        <Droppable droppableId={listKey} key={listKey}>
+                            {(provided) => (
+                                <div {...provided.droppableProps} ref={provided.innerRef} className="list">
+                                    {list[listKey].map((item, index) => ( //TODO  UPDATE
+                                        <Draggable key={item.id} draggableId={item.id} index={index}>
+                                            {(provided) => (
+                                                <div ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps} className="item">
+                                                    <Card key={index} className="mb-2 fixed-size-card">
+                                                        <Card.Body>
+                                                            <Card.Title>{item.name}</Card.Title>
+                                                            <Card.Subtitle>{item.description}</Card.Subtitle>
+                                                            <Card.Text>{item.tags.join(', ')}</Card.Text>
+                                                            <Button variant="primary" onClick={() => props.removeTask(item.id)}>Remove</Button>
+                                                        </Card.Body>
+                                                    </Card>
+                                                </div>
+                                            )}
+                                        </Draggable>
+                                    ))}
+                                    {provided.placeholder}
+                                </div>
+                            )}
+                        </Droppable>
+                    </div>
+                    {index < array.length - 1 && <hr />}
+                </React.Fragment>
             ))}
         </DragDropContext>
     );

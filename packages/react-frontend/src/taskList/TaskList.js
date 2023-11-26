@@ -103,8 +103,6 @@ function MyTaskList() {
                 <option value="Personal">Personal</option>
             </select>
             <DragAndDropComponent
-                name="High Priority"
-                id={1}
                 taskData={filteredTasks}
                 removeTask={removeTask}
             ></DragAndDropComponent>
