@@ -1,5 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
+import Card from 'react-bootstrap/Card';
+import Button from 'react-bootstrap/Button'
 import "./styles.css";
 
 const initialData = {
@@ -112,7 +114,14 @@ function DragAndDropComponent(props) {
                                 <Draggable key={item.id} draggableId={item.id} index={index}>
                                     {(provided) => (
                                         <div ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps} className="item">
-                                            {item.description}
+                                            <Card key={index} className="mb-2 fixed-size-card">
+                                                <Card.Body>
+                                                    <Card.Title>{item.name}</Card.Title>
+                                                    <Card.Subtitle>{item.description}</Card.Subtitle>
+                                                    <Card.Text>{item.tags.join(', ')}</Card.Text>
+                                                    <Button variant="primary" onClick={() => props.removeTask(item.id)}>Remove</Button>
+                                                </Card.Body>
+                                            </Card>
                                         </div>
                                     )}
                                 </Draggable>
