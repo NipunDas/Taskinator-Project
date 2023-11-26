@@ -44,20 +44,14 @@ function DragAndDropComponent(props) {
     });
 
     useEffect(() => {
-        list.high = props.taskData.filter(task => task.priority === 1);
-        list.medium = props.taskData.filter(task => task.priority === 2);
-        list.low = props.taskData.filter(task => task.priority === 3);
+        const newList = {
+            high: props.taskData.filter(task => task.priority === 1).map(({ _id, ...rest }) => ({ ...rest, id: _id })),
+            medium: props.taskData.filter(task => task.priority === 2).map(({ _id, ...rest }) => ({ ...rest, id: _id })),
+            low: props.taskData.filter(task => task.priority === 3).map(({ _id, ...rest }) => ({ ...rest, id: _id })),
+        };
 
-        Object.keys(list).forEach(key => {
-            list[key] = list[key].map(item => {
-                const { _id, ...rest } = item;
-                return { ...rest, id: _id };
-            });
-        });
-
-        setList(list);
-        console.log("PRINT DATA:::::")
-        console.log(list);
+        setList(newList);
+        console.log("Updated list:", newList);
     }, [props.taskData]);
 
 
