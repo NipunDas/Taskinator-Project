@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
-import Grid from "./Grid";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Button from "react-bootstrap/Button";
 import { Link } from "react-router-dom";
+import DragAndDropComponent from "../Grid";
 
 const api_url = "https://taskinator-api.azurewebsites.net";
 
@@ -65,10 +65,67 @@ function MyTaskList() {
         });
     }
 
+    function updateTask(task, newListId) {
+        const listIdMap = {
+            high: 1,
+            medium: 2,
+            low: 3
+        };
+
+        const numericListId = listIdMap[newListId];
+
+        const taskData = {
+            name: task.name,
+            description: task.description,
+            tags: task.tags,
+            priority: numericListId,
+            _id: task.id
+        };
+
+        const promise = fetch(
+            `${api_url}/task-lists/65553647a73a1b75066a47ab/tasks`,
+            {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(taskData)
+            }
+        );
+
+        return promise;
+    }
+
+    function onTaskMove(task, newListId) {
+        updateTask(task, newListId)
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error("Network response was not ok");
+                }
+                return response.json();
+            })
+            .then((data) => {
+                fetchTasks()
+                    .then((res) => res.json())
+                    .then((json) => setTasks(json["tasks"]))
+                    .catch((error) => {
+                        console.log(error);
+                    });
+                fetchTasks()
+                    .then((res) => res.json())
+                    .then((json) => setFilteredTasks(json["tasks"]))
+                    .catch((error) => {
+                        console.log(error);
+                    });
+            })
+            .catch((error) => console.error("Error:", error));
+    }
+
     function filterTasks() {
         var value = document.getElementById("filter").value;
         if (value !== "All") {
             filteredTasks = tasks.filter((task) => task.tags.includes(value));
+
             setFilteredTasks(filteredTasks);
         } else {
             filteredTasks = tasks;
@@ -101,24 +158,11 @@ function MyTaskList() {
                 <option value="Work">Work</option>
                 <option value="Personal">Personal</option>
             </select>
-            <Grid
-                name="High Priority"
-                id={1}
+            <DragAndDropComponent
                 taskData={filteredTasks}
+                updateTask={onTaskMove}
                 removeTask={removeTask}
-            ></Grid>
-            <Grid
-                name="Medium Priority"
-                id={2}
-                taskData={filteredTasks}
-                removeTask={removeTask}
-            ></Grid>
-            <Grid
-                name="Low Priority"
-                id={3}
-                taskData={filteredTasks}
-                removeTask={removeTask}
-            ></Grid>
+            ></DragAndDropComponent>
             <Row className="mt-4">
                 <Col>
                     <Link to="/taskAdd">
