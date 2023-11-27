@@ -67,7 +67,6 @@ function MyTaskList() {
     }
 
     function updateTask(task, newListId) {
-        // Convert newListId to the corresponding numerical value
         const listIdMap = {
             high: 1,
             medium: 2,
@@ -76,24 +75,20 @@ function MyTaskList() {
 
         const numericListId = listIdMap[newListId];
 
-        // Prepare the task data to be sent in the request body
         const taskData = {
             name: task.name,
             description: task.description,
             tags: task.tags,
             priority: numericListId,
-            _id: task.id,
+            _id: task.id
         };
-
-        console.log("DATAAA SENT");
-        console.log(JSON.stringify(taskData));
 
         const promise = fetch(
             `${api_url}/task-lists/65553647a73a1b75066a47ab/tasks`,
             {
                 method: "PUT",
                 headers: {
-                    'Content-Type': 'application/json'
+                    "Content-Type": "application/json"
                 },
                 body: JSON.stringify(taskData)
             }
@@ -103,20 +98,14 @@ function MyTaskList() {
     }
 
     function onTaskMove(task, newListId) {
-        console.log(`Card with ID ${task.id} moved to ${newListId}`);
-
-        // console.log(taskId);
-
         updateTask(task, newListId)
-            .then(response => {
+            .then((response) => {
                 if (!response.ok) {
-                    throw new Error('Network response was not ok');
+                    throw new Error("Network response was not ok");
                 }
                 return response.json();
             })
-            .then(data => {
-                console.log('Success:', data);
-
+            .then((data) => {
                 fetchTasks()
                     .then((res) => res.json())
                     .then((json) => setTasks(json["tasks"]))
@@ -130,7 +119,7 @@ function MyTaskList() {
                         console.log(error);
                     });
             })
-            .catch((error) => console.error('Error:', error));
+            .catch((error) => console.error("Error:", error));
     }
 
     function filterTasks() {
@@ -142,9 +131,6 @@ function MyTaskList() {
         } else {
             filteredTasks = tasks;
             setFilteredTasks(filteredTasks);
-
-            console.log("GET NEW FILTERED DATA");
-            console.log(filteredTasks);
         }
     }
 

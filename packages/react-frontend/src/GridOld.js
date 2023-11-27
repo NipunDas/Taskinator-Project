@@ -1,20 +1,18 @@
-import React, { useState, useEffect } from 'react';
-import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
+import React, { useState, useEffect } from "react";
+import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import "./styles.css";
-import Card from 'react-bootstrap/Card';
+import Card from "react-bootstrap/Card";
 //import { ListData } from "./list";
 
 const initialData = {
     high: [
-        { id: 'high-1', content: 'High Priority 1' },
-        { id: 'high-2', content: 'High Priority 2' }
+        { id: "high-1", content: "High Priority 1" },
+        { id: "high-2", content: "High Priority 2" }
     ],
-    medium: [
-        { id: 'medium-1', content: 'Medium Priority 1' }
-    ],
+    medium: [{ id: "medium-1", content: "Medium Priority 1" }],
     low: [
-        { id: 'low-1', content: 'Low Priority 1' },
-        { id: 'low-2', content: 'Low Priority 2' }
+        { id: "low-1", content: "Low Priority 1" },
+        { id: "low-2", content: "Low Priority 2" }
     ]
 };
 
@@ -23,13 +21,13 @@ function MultiListDragAndDrop(props) {
     const [list, setList] = useState({
         high: [],
         medium: [],
-        low: [],
+        low: []
     });
 
     useEffect(() => {
-        list.high = props.taskData.filter(task => task.priority === 1);
-        list.medium = props.taskData.filter(task => task.priority === 2);
-        list.low = props.taskData.filter(task => task.priority === 3);
+        list.high = props.taskData.filter((task) => task.priority === 1);
+        list.medium = props.taskData.filter((task) => task.priority === 2);
+        list.low = props.taskData.filter((task) => task.priority === 3);
 
         setList(list);
         console.log(list);
@@ -42,7 +40,10 @@ function MultiListDragAndDrop(props) {
             return;
         }
 
-        if (source.droppableId === destination.droppableId && source.index === destination.index) {
+        if (
+            source.droppableId === destination.droppableId &&
+            source.index === destination.index
+        ) {
             return;
         }
 
@@ -69,15 +70,11 @@ function MultiListDragAndDrop(props) {
         const newData = {
             ...list,
             [source.droppableId]: startTasks,
-            [destination.droppableId]: finishTasks,
+            [destination.droppableId]: finishTasks
         };
 
         setList(newData);
     };
-
-
-
-
 
     return (
         <div>
@@ -86,11 +83,24 @@ function MultiListDragAndDrop(props) {
                 {Object.keys(list).map((listKey) => (
                     <Droppable droppableId={listKey} key={listKey}>
                         {(provided) => (
-                            <div {...provided.droppableProps} ref={provided.innerRef} className="list">
+                            <div
+                                {...provided.droppableProps}
+                                ref={provided.innerRef}
+                                className="list"
+                            >
                                 {list[listKey].map((item, index) => (
-                                    <Draggable key={item.id} draggableId={item.id} index={index}>
+                                    <Draggable
+                                        key={item.id}
+                                        draggableId={item.id}
+                                        index={index}
+                                    >
                                         {(provided) => (
-                                            <div ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps} className="item">
+                                            <div
+                                                ref={provided.innerRef}
+                                                {...provided.draggableProps}
+                                                {...provided.dragHandleProps}
+                                                className="item"
+                                            >
                                                 {item.description}
                                             </div>
                                         )}
