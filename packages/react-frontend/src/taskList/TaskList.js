@@ -3,7 +3,7 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Button from "react-bootstrap/Button";
 import { Link } from "react-router-dom";
-import DragAndDropComponent from "../Grid";
+import DragAndDropComponent from "./Grid";
 
 const api_url = "https://taskinator-api.azurewebsites.net";
 

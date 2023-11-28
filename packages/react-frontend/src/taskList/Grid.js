@@ -1,65 +1,149 @@
-import "bootstrap/dist/css/bootstrap.min.css";
+import React, { useEffect, useState } from "react";
+import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import Card from "react-bootstrap/Card";
-import Container from "react-bootstrap/Container";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
 import Button from "react-bootstrap/Button";
+import "../styles.css";
 
-function GridHeader(props) {
-    return (
-        <div>
-            <hr />
-            <h2 className="p-2">{props.name}</h2>
-        </div>
-    );
-}
+function DragAndDropComponent(props) {
+    const [list, setList] = useState({
+        high: [],
+        medium: [],
+        low: []
+    });
 
-function GridBody(props) {
+    useEffect(() => {
+        const newList = {
+            high: props.taskData
+                .filter((task) => task.priority === 1)
+                .map(({ _id, ...rest }) => ({ ...rest, id: _id })),
+            medium: props.taskData
+                .filter((task) => task.priority === 2)
+                .map(({ _id, ...rest }) => ({ ...rest, id: _id })),
+            low: props.taskData
+                .filter((task) => task.priority === 3)
+                .map(({ _id, ...rest }) => ({ ...rest, id: _id }))
+        };
+
+        setList(newList);
+    }, [props.taskData]);
+
+    const onDragEnd = (result) => {
+        const { source, destination } = result;
+
+        if (!destination) {
+            return;
+        }
+
+        if (
+            source.droppableId === destination.droppableId &&
+            source.index === destination.index
+        ) {
+            return;
+        }
+
+        const start = list[source.droppableId];
+        const finish = list[destination.droppableId];
+
+        if (start === finish) {
+            const newList = Array.from(start);
+            const [removed] = newList.splice(source.index, 1);
+            newList.splice(destination.index, 0, removed);
+
+            const newData = { ...list, [source.droppableId]: newList };
+            setList(newData);
+            return;
+        }
+
+        const startTasks = Array.from(start);
+        const finishTasks = Array.from(finish);
+        const [removed] = startTasks.splice(source.index, 1);
+
+        finishTasks.splice(destination.index, 0, removed);
+
+        const newData = {
+            ...list,
+            [source.droppableId]: startTasks,
+            [destination.droppableId]: finishTasks
+        };
+
+        setList(newData);
+
+        props.updateTask(removed, destination.droppableId);
+    };
+
     return (
-        <Container>
-            <Row xs={2} md={4} lg={3}>
-                {props.taskData?.map((task, index) => {
-                    if (props.id === task.priority) {
-                        return (
-                            <Col key={index}>
-                                <Card key={index} className="mb-2">
-                                    <Card.Body>
-                                        <Card.Title>{task.name}</Card.Title>
-                                        <Card.Subtitle>
-                                            {task.description}
-                                        </Card.Subtitle>
-                                        <Card.Text>{task.tags}</Card.Text>
-                                        <Button
-                                            variant="primary"
-                                            onClick={() =>
-                                                props.removeTask(task._id)
-                                            }
+        <DragDropContext onDragEnd={onDragEnd}>
+            {Object.keys(list).map((listKey, index, array) => (
+                <React.Fragment key={listKey}>
+                    <div key={listKey} className="priority-section">
+                        <h3>
+                            {listKey.charAt(0).toUpperCase() + listKey.slice(1)}{" "}
+                            Priority
+                        </h3>
+                        <Droppable droppableId={listKey} key={listKey}>
+                            {(provided) => (
+                                <div
+                                    {...provided.droppableProps}
+                                    ref={provided.innerRef}
+                                    className="list"
+                                >
+                                    {list[listKey].map((item, index) => (
+                                        <Draggable
+                                            key={item.id}
+                                            draggableId={item.id}
+                                            index={index}
                                         >
-                                            Remove
-                                        </Button>
-                                    </Card.Body>
-                                </Card>
-                            </Col>
-                        );
-                    }
-                    return undefined;
-                })}
-            </Row>
-        </Container>
+                                            {(provided) => (
+                                                <div
+                                                    ref={provided.innerRef}
+                                                    {...provided.draggableProps}
+                                                    {...provided.dragHandleProps}
+                                                    className="item"
+                                                >
+                                                    <Card
+                                                        key={index}
+                                                        className="mb-2 fixed-size-card"
+                                                    >
+                                                        <Card.Body>
+                                                            <Card.Title>
+                                                                {item.name}
+                                                            </Card.Title>
+                                                            <Card.Subtitle>
+                                                                {
+                                                                    item.description
+                                                                }
+                                                            </Card.Subtitle>
+                                                            <Card.Text>
+                                                                {item.tags.join(
+                                                                    ", "
+                                                                )}
+                                                            </Card.Text>
+                                                            <Button
+                                                                variant="primary"
+                                                                onClick={() =>
+                                                                    props.removeTask(
+                                                                        item.id
+                                                                    )
+                                                                }
+                                                            >
+                                                                Remove
+                                                            </Button>
+                                                        </Card.Body>
+                                                    </Card>
+                                                </div>
+                                            )}
+                                        </Draggable>
+                                    ))}
+                                    {provided.placeholder}
+                                </div>
+                            )}
+                        </Droppable>
+                    </div>
+                    {index < array.length - 1 && <hr />}
+                </React.Fragment>
+            ))}
+        </DragDropContext>
     );
 }
 
-function Grid(props) {
-    return (
-        <div>
-            <GridHeader name={props.name} />
-            <GridBody
-                id={props.id}
-                taskData={props.taskData}
-                removeTask={props.removeTask}
-            />
-        </div>
-    );
-}
-
-export default Grid;
+export default DragAndDropComponent;
