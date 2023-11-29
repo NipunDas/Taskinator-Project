@@ -1,0 +1,51 @@
+/* Style for the overall container */
+.App {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 20px;
+    gap: 20px;
+}
+
+/* Style for each priority section including the header and list */
+.priority-section {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+/* Style for each list title */
+.priority-section h2 {
+    font-size: 1.5rem;
+    border-bottom: 2px solid #ccc;
+    padding-bottom: 0.5rem;
+}
+
+/* Style for the list itself */
+.list {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+    overflow-x: auto;
+}
+
+/* Style for each draggable item */
+.fixed-size-card {
+    width: 300px; /* Adjust the width as needed */
+    height: 200px; /* Adjust the height as needed */
+    overflow: auto; /* To handle content overflow */
+}
+
+/* Scrollbar styling for list */
+.list::-webkit-scrollbar {
+    height: 8px;
+}
+
+.list::-webkit-scrollbar-thumb {
+    background: #ccc;
+    border-radius: 4px;
+}
+
+.list::-webkit-scrollbar-thumb:hover {
+    background: #aaa;
+}
