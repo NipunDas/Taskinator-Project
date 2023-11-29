@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import TheForm from "./TheForm";
 import MyTable from "./MyTableHeader";
+import fetchFilters from "../taskList/Filters"
 
 function MyAddTask() {
     const [characters, setCharacters] = useState([]);
@@ -15,6 +16,7 @@ function MyAddTask() {
 
     function updateList(person) {
         setCharacters([...characters, person]);
+        fetchFilters();
     }
     return (
         <div className="container">

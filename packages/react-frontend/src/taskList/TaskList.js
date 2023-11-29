@@ -4,6 +4,7 @@ import Col from "react-bootstrap/Col";
 import Button from "react-bootstrap/Button";
 import { Link } from "react-router-dom";
 import DragAndDropComponent from "./Grid";
+import Filters from "./Filters";
 
 const api_url = "https://taskinator-api.azurewebsites.net";
 
@@ -125,7 +126,6 @@ function MyTaskList() {
         var value = document.getElementById("filter").value;
         if (value !== "All") {
             filteredTasks = tasks.filter((task) => task.tags.includes(value));
-
             setFilteredTasks(filteredTasks);
         } else {
             filteredTasks = tasks;
@@ -151,13 +151,10 @@ function MyTaskList() {
     return (
         <div>
             <h1 className="p-2">To Do List</h1>
-            <label htmlFor="filter">Filter</label>
-            <select name="filter" id="filter" onChange={filterTasks}>
-                <option value="All">All Items</option>
-                <option value="School">School</option>
-                <option value="Work">Work</option>
-                <option value="Personal">Personal</option>
-            </select>
+            <Filters
+                tasks={tasks}
+                filterTasks={filterTasks}
+            ></Filters>
             <DragAndDropComponent
                 taskData={filteredTasks}
                 updateTask={onTaskMove}
