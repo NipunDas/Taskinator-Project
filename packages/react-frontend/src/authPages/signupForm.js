@@ -6,8 +6,6 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import { useNavigate } from "react-router-dom";
 
-const api_url = "https://taskinator-api.azurewebsites.net";
-
 function SignupForm(props) {
     const [user, setUser] = useState({
         username: "",
