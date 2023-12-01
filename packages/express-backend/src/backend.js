@@ -2,12 +2,16 @@
 import express from "express";
 import cors from "cors";
 import Services from "./services.js";
+import { registerUser, loginUser } from "./auth.js";
 
 const app = express();
 const port = 8000;
 
 app.use(cors());
 app.use(express.json());
+
+app.post("/signup", registerUser);
+app.post("/login", loginUser);
 
 app.get("/users", (req, res) => {
     const name = req.query.name;
