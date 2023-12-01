@@ -5,9 +5,14 @@ import { Button } from "react-bootstrap";
 
 const api_url = "https://taskinator-api.azurewebsites.net";
 
-//Add events by using the events0, events1, and events2 arrays
-//Add colors to events by using the respective eventcolors arrays
-//Arrays are assumed to be in the same order
+/*
+Calendar Month
+
+To add events, place titles in the following arrays
+events0
+events1
+events2
+*/
 const CalMonth = (props) => {
     /* HELPER FUNCTIONS */
     //Increases or Decreases The Selected Month
@@ -33,18 +38,20 @@ const CalMonth = (props) => {
         return linkYear + "-" + linkMonth + "-" + linkDay;
     }
 
-    /*
-    function updateList(task) {
-        setTasks([...tasks, task]);
-    }
-    */
-
+    //Determines if two dates are the same
     function sameDay(d1, d2) {
         return (
             d1.getFullYear() === d2.getFullYear() &&
             d1.getMonth() === d2.getMonth() &&
             d1.getDate() === d2.getDate()
         );
+    }
+
+    //Obtains a list of tasks
+    //Note: Database is hardcoded currently, change to reflect user
+    function fetchTasks() {
+        const promise = fetch(`${api_url}/task-lists/65553647a73a1b75066a47ab`);
+        return promise;
     }
 
     //Constants
@@ -65,11 +72,13 @@ const CalMonth = (props) => {
         "December"
     ];
     const maxDays = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+    const daysnum = 42;
 
     //Note: Vulnerable to invalid dates
     let params = useParams();
     var pstDate = params["newdate"] + " PST";
     var [date, setDate] = useState(new Date(pstDate));
+    //Obtain first day of the month
     var firstdate = new Date(date.getFullYear(), date.getMonth(), 1);
     var month = firstdate.getMonth();
     var day = firstdate.getDay();
@@ -91,8 +100,8 @@ const CalMonth = (props) => {
     }
 
     //Filling Up A Size 42 Array With The Dates To Display For The Month
-    var displaydays = new Array(42);
-    for (var i = 0; i < 42; i++) {
+    var displaydays = new Array(daysnum);
+    for (var i = 0; i < daysnum; i++) {
         //First day isn't always Sunday
         if (i < day) {
             var newyear = year;
@@ -120,37 +129,37 @@ const CalMonth = (props) => {
     const calendary = 150;
 
     //Array of Events and Event Colors
-    var events0 = new Array(42);
-    var eventcolors0 = new Array(42);
-    var events1 = new Array(42);
-    var eventcolors1 = new Array(42);
-    var events2 = new Array(42);
-    var eventcolors2 = new Array(42);
+    //Note: Event Colors Currently Hardcoded
+    var events0 = new Array(daysnum);
+    var eventcolors0 = new Array(daysnum);
+    var events1 = new Array(daysnum);
+    var eventcolors1 = new Array(daysnum);
+    var events2 = new Array(daysnum);
+    var eventcolors2 = new Array(daysnum);
 
     /* ADD EVENT GET CODE */
     for (let j = 0; j < tasks.length; j++) {
-        for (let i = 0; i < 42; i++) {
+        for (let i = 0; i < daysnum; i++) {
             var task = tasks[j];
+            //Tasks without names or dates cannot be placed
             if (!task["name"] || !task["date"]) continue;
             var s = task["date"];
+            //Converts UTC Date to Local Time
             var startDate = new Date(s.replace(/-/g, "/").replace("T", " "));
+            //Ensure Task Is Actually A Part Of The Day
             if (!sameDay(new Date(startDate), displaydays[i])) continue;
-            if (events0[i] === null) {
+            //Find Open Space In The Array
+            if (events0[i] == null) {
                 events0[i] = task["name"];
                 eventcolors0[i] = "red";
             } else if (events1[i] == null) {
                 events1[i] = task["name"];
                 eventcolors1[i] = "blue";
             } else if (events2[i] == null) {
-                events0[2] = task["name"];
+                events0[i] = task["name"];
                 eventcolors2[i] = "yellow";
             }
         }
-    }
-
-    function fetchTasks() {
-        const promise = fetch(`${api_url}/task-lists/65553647a73a1b75066a47ab`);
-        return promise;
     }
 
     useEffect(() => {
