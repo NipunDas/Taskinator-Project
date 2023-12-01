@@ -30,10 +30,6 @@ function SignupForm(props) {
         }
 
         try {
-            // Your fetch logic here...
-
-            // Assuming successful form submission
-            // Reset the form
             setUser({
                 username: "",
                 password: ""
