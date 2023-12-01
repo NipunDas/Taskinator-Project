@@ -199,7 +199,7 @@ const CalMonthSquare = (props) => {
                 </div>
             )}
             <div>
-                <Link to={"/day/" + linkString(date)}>
+                <Link to={"/calendar/day/" + linkString(date)}>
                     <button
                         style={{
                             background: "transparent",

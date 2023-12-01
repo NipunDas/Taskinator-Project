@@ -5,6 +5,8 @@ import CalWeek from "./calendar/CalWeek";
 import CalDay from "./calendar/CalDay";
 import MyAddTask from "./taskAdd/AddTask";
 import MyTaskList from "./taskList/TaskList";
+import Login from "./authPages/login.js";
+import Signup from "./authPages/signup.js";
 const curdate = new Date();
 const curyear = curdate.getFullYear();
 const curmonth = curdate.getMonth() + 1;
@@ -30,8 +32,9 @@ function MyCalendar() {
     return (
         <BrowserRouter>
             <Routes>
+                <Route path="/" element={<Login />} />
                 <Route
-                    path="/"
+                    path="calendar"
                     element={
                         <Navigate
                             replace
@@ -47,7 +50,7 @@ function MyCalendar() {
                     }
                 />
                 <Route
-                    path="week"
+                    path="calendar/week"
                     element={
                         <Navigate
                             replace
@@ -55,9 +58,9 @@ function MyCalendar() {
                         />
                     }
                 />
-                <Route path="week/:newdate" element={<CalWeek />} />
+                <Route path="calendar/week/:newdate" element={<CalWeek />} />
                 <Route
-                    path="month"
+                    path="calendar/month"
                     element={
                         <Navigate
                             replace
@@ -65,9 +68,9 @@ function MyCalendar() {
                         />
                     }
                 />
-                <Route path="month/:newdate" element={<CalMonth />} />
+                <Route path="calendar/month/:newdate" element={<CalMonth />} />
                 <Route
-                    path="day"
+                    path="calendar/day"
                     element={
                         <Navigate
                             replace
@@ -75,9 +78,10 @@ function MyCalendar() {
                         />
                     }
                 />
-                <Route path="day/:newdate" element={<CalDay />} />
+                <Route path="calendar/day/:newdate" element={<CalDay />} />
                 <Route path="taskList" element={<MyTaskList />} />
                 <Route path="taskAdd" element={<MyAddTask />} />
+                <Route path="signup" element={<Signup />} />
             </Routes>
         </BrowserRouter>
     );

@@ -255,7 +255,7 @@ const CalWeek = (props) => {
             </div>
 
             <div>
-                <Link to={"/month/" + linkString(datearr[3])}>
+                <Link to={"/calendar/month/" + linkString(datearr[3])}>
                     <button
                         style={{
                             background: "Black",

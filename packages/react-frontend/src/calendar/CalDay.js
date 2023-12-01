@@ -231,7 +231,7 @@ const CalWeek = (props) => {
                 </button>
             </div>
             <div>
-                <Link to={"/week/" + linkString(date)}>
+                <Link to={"/calendar/week/" + linkString(date)}>
                     <button
                         style={{
                             background: "Black",
