@@ -3,8 +3,12 @@ import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 
 dotenv.config();
-const creds = [];
 
+const creds = []; // For now storing credentials in an array, move to database later
+
+/* Registers a user by validating input (making sure username and password are defined), and username
+   isn't already taken, then using bcrypt to encrypt the password. generateAccessToken() then provides
+   a token that can be used to access protected routes */
 export function registerUser(req, res) {
     const { username, pwd } = req.body;
 
@@ -26,6 +30,8 @@ export function registerUser(req, res) {
     }
 }
 
+/* Uses jwt to generate an access token for the user. This access token ensures that routes that could
+   contain sensitive data are only accessed by authenticated users */
 function generateAccessToken(username) {
     return new Promise((resolve, reject) => {
         jwt.sign(
@@ -43,6 +49,8 @@ function generateAccessToken(username) {
     });
 }
 
+/* Verifies the provided token to ensure that the user trying to access a protected route is using 
+   a valid token */
 export function authenticateUser(req, res, next) {
     const authHeader = req.headers["authorization"];
     // Getting the second part of the auth header (the token)
@@ -63,6 +71,10 @@ export function authenticateUser(req, res, next) {
     }
 }
 
+/* Logs in an already existing user. Similar to registerUser(), but since the user already exists,
+   the function uses bcrypt to encrpt the given password and compare it to the already encrypted
+   password stored in teh database. If these match, an access token is provided in the response body
+   */
 export function loginUser(req, res) {
     const { username, pwd } = req.body; // from form
     const retrievedUser = creds.find((c) => c.username === username);
