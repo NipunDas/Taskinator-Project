@@ -24,7 +24,7 @@ function TheForm(props) {
         }));
     }
 
-    const onSave = () =>{
+    const onSave = () => {
         // Check if name is given
         if (person.name === "") {
             alert("Please give a name for the task.");
@@ -49,69 +49,21 @@ function TheForm(props) {
         if (person.duration === "") {
             alert("Please select a duration for the task.");
             return;
+        } else if (parseInt(person.duration) < 30) {
+            alert("PLease enter a longer duration.");
+            return;
         }
-        submitForm()
-    }
-
-    function fetchTasks() {
-        const promise = fetch(`${api_url}/task-lists/65553647a73a1b75066a47ab`);
-        return promise;
-    }
-
-
-    async function validateTask() {
-        try {
-            const res = await fetchTasks();
-            const json = await res.json(); // Wait for the promise from res.json() to resolve
-
-            if (!json.tasks || !Array.isArray(json.tasks)) {
-                console.error("Tasks is not an array or undefined");
-                return false;
-            }
-
-            const newTaskStartTime = new Date(person.date);
-            const newTaskEndTime = new Date(person.date);
-            newTaskEndTime.setMinutes(newTaskEndTime.getMinutes() + parseInt(person.duration));
-
-            for (let task of json.tasks) {
-                if (task.date) {
-                    const taskStartTime = new Date(task.date);
-                    const taskEndTime = new Date(task.date);
-                    taskEndTime.setMinutes(taskEndTime.getMinutes() + parseInt(task.duration));
-
-                    // Check for overlap with other tasks
-                    if (newTaskStartTime < taskEndTime && newTaskEndTime > taskStartTime) {
-                        console.log("taskname: ", task);
-                        return true; // Conflict found
-                    }
-                }
-            }
-            return false;
-        } catch (error) {
-            console.error("Error in validateTask: ", error);
-            return false;
-        }
-    }
-
-
-
-
+        submitForm();
+    };
 
     const submitForm = async () => {
-        console.log("PERSON:  ");
-        console.log( person);
-
         person.date = new Date(person.date);
-
-
         try {
-            const timeConflict = await validateTask(); // Wait for the promise
-            console.log("TIMECONFLICT");
-            console.log(timeConflict);
+            // Wait for the promise
+            const timeConflict = await validateTask();
             if (timeConflict) {
                 alert("Time conflict");
-            }
-            else {
+            } else {
                 try {
                     const response = await fetch(
                         `${api_url}/task-lists/65553647a73a1b75066a47ab/tasks`,
@@ -123,22 +75,15 @@ function TheForm(props) {
                             body: JSON.stringify(person)
                         }
                     );
-
                     if (response.status === 201) {
                         const newUser = await response.json();
                         props.handleSubmit(newUser);
-                    } else if (response.status === 409) {
-                        console.log("Time conflict");
-                        alert("Time conflict");
-                        return;
                     } else {
                         console.error("Failed to add user");
                     }
                 } catch (error) {
                     console.error("Error adding user:", error);
                 }
-
-
                 // Reset the form after submission
                 setPerson({
                     name: "",
@@ -149,12 +94,64 @@ function TheForm(props) {
                     duration: ""
                 });
             }
-        }catch (error) {
+        } catch (error) {
             console.error("Error during form submission", error);
         }
     };
 
+    function fetchTasks() {
+        const promise = fetch(`${api_url}/task-lists/65553647a73a1b75066a47ab`);
+        return promise;
+    }
 
+    async function validateTask() {
+        try {
+            const res = await fetchTasks();
+            // Wait for the promise from res.json() to resolve
+            const json = await res.json();
+
+            if (!json.tasks || !Array.isArray(json.tasks)) {
+                return false;
+            }
+
+            const newTaskStartTime = new Date(person.date);
+            const newTaskEndTime = new Date(person.date);
+            newTaskEndTime.setMinutes(
+                newTaskEndTime.getMinutes() + parseInt(person.duration)
+            );
+
+            // Check if the new task goes past midnight
+            const midnight = new Date(newTaskStartTime);
+            midnight.setHours(24, 0, 0, 0);
+
+            if (newTaskEndTime > midnight) {
+                console.error("Task goes past midnight, not allowed.");
+                return true;
+            }
+
+            for (let task of json.tasks) {
+                if (task.date) {
+                    const taskStartTime = new Date(task.date);
+                    const taskEndTime = new Date(task.date);
+                    taskEndTime.setMinutes(
+                        taskEndTime.getMinutes() + parseInt(task.duration)
+                    );
+
+                    // Check for overlap with other tasks
+                    if (
+                        newTaskStartTime < taskEndTime &&
+                        newTaskEndTime > taskStartTime
+                    ) {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        } catch (error) {
+            console.error("Error in validateTask: ", error);
+            return false;
+        }
+    }
 
     return (
         <Form>
@@ -164,7 +161,7 @@ function TheForm(props) {
                     type="text"
                     name="name"
                     placeholder="Enter name"
-                    maxLength="28"
+                    maxLength="20"
                     value={person.name}
                     onChange={handleChange}
                 />
@@ -176,7 +173,7 @@ function TheForm(props) {
                     type="text"
                     name="description"
                     placeholder="Enter description"
-                    maxLength="80"
+                    maxLength="50"
                     value={person.description}
                     onChange={handleChange}
                 />
@@ -196,14 +193,18 @@ function TheForm(props) {
 
             <Form.Group controlId="formBasicPriority">
                 <Form.Label>Priority</Form.Label>
-                <Form.Control as="select" name="priority" value={person.priority} onChange={handleChange}>
+                <Form.Control
+                    as="select"
+                    name="priority"
+                    value={person.priority}
+                    onChange={handleChange}
+                >
                     <option value="">Select Priority</option>
                     <option value="1">High</option>
                     <option value="2">Medium</option>
                     <option value="3">Low</option>
                 </Form.Control>
             </Form.Group>
-
 
             <Form.Group controlId="formBasicDate">
                 <Form.Label>Date</Form.Label>
@@ -219,8 +220,9 @@ function TheForm(props) {
             <Form.Group controlId="formBasicDuration">
                 <Form.Label>Duration (In Minutes) </Form.Label>
                 <Form.Control
-                    type="text"
+                    type="number"
                     name="duration"
+                    step="1"
                     placeholder="Enter duration"
                     maxLength="5"
                     value={person.duration}

@@ -70,7 +70,7 @@ app.post("/task-lists/:id/tasks", (req, res) => {
     /* Getting task list's ID from user, updating task list */
     Services.addTask(id, task)
         .then((new_task) => {
-            if (task === null) {
+            if (new_task === null) {
                 res.status(404).send("Task list not found.");
             } else {
                 res.status(201).send(new_task);
