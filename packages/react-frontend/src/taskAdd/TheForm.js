@@ -3,8 +3,7 @@ import React, { useState } from "react";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import { Link } from "react-router-dom";
-
-const api_url = "https://taskinator-api.azurewebsites.net";
+import { API_URL } from "../Consts.js";
 
 function TheForm(props) {
     const [person, setPerson] = useState({
@@ -27,12 +26,12 @@ function TheForm(props) {
     const submitForm = async () => {
         try {
             const response = await fetch(
-                `${api_url}/task-lists/65553647a73a1b75066a47ab/tasks`,
+                `${API_URL}/task-lists/${props.taskList}/tasks`,
                 {
                     method: "POST",
-                    headers: {
+                    headers: props.addHeader({
                         "Content-Type": "application/json"
-                    },
+                    }),
                     body: JSON.stringify(person)
                 }
             );

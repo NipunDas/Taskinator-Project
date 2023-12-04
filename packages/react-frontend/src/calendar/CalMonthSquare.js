@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 const CalMonthSquare = (props) => {
     /* HELPER FUNCTIONS */
-    //Trunacte Function
+    //Truncate Function
     function truncate(str, maxlength) {
         if (str.length > maxlength) {
             return str.slice(0, maxlength - 1) + "…";
@@ -199,7 +199,7 @@ const CalMonthSquare = (props) => {
                 </div>
             )}
             <div>
-                <Link to={"/day/" + linkString(date)}>
+                <Link to={"/calendar/day/" + linkString(date)}>
                     <button
                         style={{
                             background: "transparent",

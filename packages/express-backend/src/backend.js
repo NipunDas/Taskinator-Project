@@ -2,7 +2,7 @@
 import express from "express";
 import cors from "cors";
 import Services from "./services.js";
-import { registerUser, loginUser } from "./auth.js";
+import { registerUser, loginUser, authenticateUser } from "./auth.js";
 
 const app = express();
 const port = 8000;
@@ -10,10 +10,11 @@ const port = 8000;
 app.use(cors());
 app.use(express.json());
 
+// Backend routes for signing up and logging in a user (don't have to be protected)
 app.post("/signup", registerUser);
 app.post("/login", loginUser);
 
-app.get("/users", (req, res) => {
+app.get("/users", authenticateUser, (req, res) => {
     const name = req.query.name;
     Services.getUsers(name)
         .then((users) => {
@@ -25,7 +26,7 @@ app.get("/users", (req, res) => {
         });
 });
 
-app.get("/users/:id", (req, res) => {
+app.get("/users/:id", authenticateUser, (req, res) => {
     const id = req.params.id;
     Services.getUserById(id)
         .then((user) => {
@@ -41,7 +42,7 @@ app.get("/users/:id", (req, res) => {
         });
 });
 
-app.get("/task-lists/:id", (req, res) => {
+app.get("/task-lists/:id", authenticateUser, (req, res) => {
     const id = req.params.id;
     Services.getTaskListById(id)
         .then((taskList) => {
@@ -57,7 +58,7 @@ app.get("/task-lists/:id", (req, res) => {
         });
 });
 
-app.post("/users", (req, res) => {
+app.post("/users", authenticateUser, (req, res) => {
     let userToAdd = req.body;
     Services.instantiateUser(userToAdd)
         .then((user) => {
@@ -68,7 +69,7 @@ app.post("/users", (req, res) => {
         });
 });
 
-app.post("/task-lists/:id/tasks", (req, res) => {
+app.post("/task-lists/:id/tasks", authenticateUser, (req, res) => {
     const id = req.params.id;
     const task = req.body;
     /* Getting task list's ID from user, updating task list */
@@ -85,7 +86,7 @@ app.post("/task-lists/:id/tasks", (req, res) => {
         });
 });
 
-app.put("/task-lists/:id/tasks", (req, res) => {
+app.put("/task-lists/:id/tasks", authenticateUser, (req, res) => {
     const taskList_id = req.params.id;
     const task = req.body;
     Services.editTask(taskList_id, task)
@@ -97,7 +98,7 @@ app.put("/task-lists/:id/tasks", (req, res) => {
         });
 });
 
-app.delete("/task-lists/:id/tasks/:taskid", (req, res) => {
+app.delete("/task-lists/:id/tasks/:taskid", authenticateUser, (req, res) => {
     const taskList_id = req.params.id;
     const task_id = req.params.taskid;
     Services.deleteTask(taskList_id, task_id)
@@ -113,7 +114,7 @@ app.delete("/task-lists/:id/tasks/:taskid", (req, res) => {
         });
 });
 
-app.delete("/users/:id", (req, res) => {
+app.delete("/users/:id", authenticateUser, (req, res) => {
     const id = req.params.id;
     Services.deleteUserById(id)
         .then((user) => {

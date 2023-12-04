@@ -10,6 +10,16 @@ const UserSchema = new mongoose.Schema(
         taskList: {
             type: mongoose.Types.ObjectId,
             required: true
+        },
+        username: {
+            type: String,
+            required: true,
+            trim: true
+        },
+        hashedPassword: {
+            type: String,
+            required: true,
+            trim: false
         }
     },
     { collection: "user_list" }

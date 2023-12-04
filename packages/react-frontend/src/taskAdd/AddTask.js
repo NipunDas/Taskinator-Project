@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import TheForm from "./TheForm";
 import MyTable from "./MyTableHeader";
 
-function MyAddTask() {
+function MyAddTask(props) {
     const [characters, setCharacters] = useState([]);
 
     function removeOneCharacter(index) {
@@ -16,13 +16,18 @@ function MyAddTask() {
     function updateList(person) {
         setCharacters([...characters, person]);
     }
+
     return (
         <div className="container">
             <MyTable
                 characterData={characters}
                 removeCharacter={removeOneCharacter}
             />
-            <TheForm handleSubmit={updateList} />
+            <TheForm
+                handleSubmit={updateList}
+                addHeader={props.addHeader}
+                taskList={props.taskList}
+            />
         </div>
     );
 }
