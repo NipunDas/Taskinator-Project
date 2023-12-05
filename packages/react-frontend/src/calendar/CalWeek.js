@@ -100,6 +100,17 @@ const CalWeek = (props) => {
         "November",
         "December"
     ];
+
+    //Obtaining Date Information
+    //Note: Assumes the date in the url is a valid date
+    let params = useParams();
+    var pstDate = params["newdate"] + " PST";
+    var [date, setDate] = useState(new Date(pstDate));
+    var month = date.getMonth();
+    var day = date.getDay();
+    var dayDate = date.getDate();
+    var year = date.getFullYear();
+
     const maxDays = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
     //Leap Year Calculation
     if (year % 4 === 0) {
@@ -115,16 +126,6 @@ const CalWeek = (props) => {
     } else {
         maxDays[1] = 28;
     }
-
-    //Obtaining Date Information
-    //Note: Assumes the date in the url is a valid date
-    let params = useParams();
-    var pstDate = params["newdate"] + " PST";
-    var [date, setDate] = useState(new Date(pstDate));
-    var month = date.getMonth();
-    var day = date.getDay();
-    var dayDate = date.getDate();
-    var year = date.getFullYear();
 
     // To indicate API call failed
     if (!tasks) {
@@ -198,8 +199,8 @@ const CalWeek = (props) => {
             var startDate = new Date(s.replace(/-/g, "/").replace("T", " "));
             //Ensure Task Is Actually A Part Of The Day
             if (sameDay(new Date(startDate), datearr[i])) addTask(task, startDate, i);
+            var periodic = task["periodic"];
             if(periodic !== ""){
-                var periodic = task["periodic"];
                 switch (periodic[0]) {
                     //Daily
                     case "D":
@@ -256,6 +257,8 @@ const CalWeek = (props) => {
                             }
                         }
                         
+                        break;
+                    default:
                         break;
                 }
             }

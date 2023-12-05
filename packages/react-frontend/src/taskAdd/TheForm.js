@@ -297,7 +297,7 @@ function TheForm(props) {
                 <option value = {5}>Yearly</option>
             </select>
 
-            {periodicState == 3 && (
+            {periodicState === 3 && (
             <div className="list-container">
                 {checkList.map((item, index) => (
                 <div key={index}>

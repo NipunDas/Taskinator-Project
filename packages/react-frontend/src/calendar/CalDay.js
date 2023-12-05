@@ -182,8 +182,8 @@ const CalWeek = (props) => {
         var startDate = new Date(s.replace(/-/g, "/").replace("T", " "));
         //Ensure Task Is Actually A Part Of The Day
         if (sameDay(new Date(startDate), date)) addTask(task, startDate);
+        var periodic = task["periodic"];
         if(periodic !== ""){
-            var periodic = task["periodic"];
             switch (periodic[0]) {
             //Daily
             case "D":
@@ -240,6 +240,8 @@ const CalWeek = (props) => {
                     }
                 }
                 
+                break;
+            default:
                 break;
             }
         }

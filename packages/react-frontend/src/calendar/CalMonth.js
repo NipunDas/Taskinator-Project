@@ -246,6 +246,8 @@ const CalMonth = (props) => {
                     }
                 }
                 break;
+            default:
+                break;
             }
         }
     }
