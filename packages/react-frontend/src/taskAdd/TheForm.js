@@ -12,7 +12,8 @@ function TheForm(props) {
         priority: "",
         tags: "",
         date: "",
-        duration: ""
+        duration: "",
+        periodic: ""
     });
 
     function handleChange(event) {
@@ -57,6 +58,7 @@ function TheForm(props) {
 
     const submitForm = async () => {
         person.date = new Date(person.date);
+        person.periodic = createPeriodicity();
         try {
             // Wait for the promise
             const timeConflict = await validateTask();
@@ -84,7 +86,8 @@ function TheForm(props) {
                     priority: "",
                     tags: "",
                     date: "",
-                    duration: ""
+                    duration: "",
+                    periodic: ""
                 });
             }
         } catch (error) {
@@ -146,6 +149,65 @@ function TheForm(props) {
             console.error("Error in validateTask: ", error);
             return false;
         }
+    }
+
+    //Checklist State
+    const [checked, setChecked] = useState([]);
+    //Periodic State
+    const [periodicState, setPeriodic] = useState("0");
+    //Options for Checklist
+    const checkList = ["Every Sunday", "Every Monday", "Every Tuesday", "Every Wednesday", "Every Thursday", "Every Friday", "Every Saturday"];
+
+    const changePeriodic = (event) => {
+        setPeriodic(event.target.value);
+    }
+
+    var isChecked = (item) =>
+        checked.includes(item) ? "checked-item" : "not-checked-item";
+
+    // Add/Remove checked item from list
+    const handleCheck = (event) => {
+        var updatedList = [...checked];
+        if (event.target.checked) {
+          updatedList = [...checked, event.target.value];
+        } else {
+          updatedList.splice(checked.indexOf(event.target.value), 1);
+        }
+        setChecked(updatedList);
+    };
+
+    function createPeriodicity(){
+        var periodicstr = "";
+        switch(periodicState){
+            case "0":
+                break;
+            case "1":
+                periodicstr = "D";
+                break;
+            case "2":
+                periodicstr = "O";
+                break;
+            case "3":
+                periodicstr = "W";
+                var checkarray = ["0", "0", "0", "0", "0", "0", "0",]
+                for(var i = 0; i < checked.length; i++){
+                    for(var j = 0; j < 7; j++){
+                        if(checked[i] === checkList[j]){
+                            checkarray[j] = "1";
+                        }
+                    }
+                }
+                periodicstr += checkarray.join('');
+                break;
+            case "4":
+                periodicstr = "M";
+                break;
+            case "5":
+                periodicstr = "Y";
+                break;
+        }
+        return periodicstr;
+
     }
 
     return (
@@ -224,6 +286,30 @@ function TheForm(props) {
                     onChange={handleChange}
                 />
             </Form.Group>
+
+            Make Task Periodic (Repeat) <br />
+            <select value={periodicState} onChange={changePeriodic}>
+                <option value = {0}>None</option>
+                <option value = {1}>Daily</option>
+                <option value = {2}>Every Other Day</option>
+                <option value = {3}>Weekly</option>
+                <option value = {4}>Monthly</option>
+                <option value = {5}>Yearly</option>
+            </select>
+
+            {periodicState == 3 && (
+            <div className="list-container">
+                {checkList.map((item, index) => (
+                <div key={index}>
+                    <input value={item} type="checkbox" onChange={handleCheck} />
+                    <span className={isChecked(item)}>{item}</span>
+                </div>
+                ))}
+            </div>
+            )}
+
+            <br />
+            <br />
 
             <div style={{ marginBottom: "10px" }}>
                 <Button variant="primary" onClick={onSave}>
