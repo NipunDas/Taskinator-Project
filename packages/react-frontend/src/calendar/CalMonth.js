@@ -181,9 +181,9 @@ const CalMonth = (props) => {
             //Add Task
             addTask(task, i);
         }
+        var periodic = task["periodic"];
         //Check Periodic Tasks
-        if(periodic != ""){
-            var periodic = task["periodic"];
+        if(periodic !== ""){
             switch (periodic[0]) {
             //Daily
             case "D":
@@ -197,7 +197,7 @@ const CalMonth = (props) => {
             case "O":
                 for(let i = 0; i < daysnum; i++){
                     if(displaydays[i] > startDate 
-                        && Math.ceil((displaydays[i].getTime() - startDate.getTime()) / (1000 * 3600 * 24)) % 2 == 0){
+                        && Math.ceil((displaydays[i].getTime() - startDate.getTime()) / (1000 * 3600 * 24)) % 2 === 0){
                         addTask(task, i);                            }
                 }
                 break;
@@ -219,10 +219,10 @@ const CalMonth = (props) => {
                 for(let i = 0; i < daysnum; i++){
                     if(displaydays[i] > startDate){
                         //In the case that the date is outside the range of the current month, place event at end of month
-                        if(startDate.getDate() > maxDays[displaydays[i].getMonth()] && displaydays[i].getDate() == maxDays[displaydays[i].getMonth()] ){
+                        if(startDate.getDate() > maxDays[displaydays[i].getMonth()] && displaydays[i].getDate() === maxDays[displaydays[i].getMonth()] ){
                             addTask(task, i);
                         }
-                        else if(displaydays[i].getDate() == startDate.getDate()){
+                        else if(displaydays[i].getDate() === startDate.getDate()){
                             addTask(task, i);
                         }
                     }
@@ -232,15 +232,15 @@ const CalMonth = (props) => {
             case "Y":
                 for(let i = 0; i < daysnum; i++){
                     if(displaydays[i] > startDate){
-                        if(startDate.getDate() == displaydays[i].getDate() && startDate.getMonth() == displaydays[i].getMonth()){
+                        if(startDate.getDate() === displaydays[i].getDate() && startDate.getMonth() === displaydays[i].getMonth()){
                             addTask(task, i);
                         }
                         //Event On Leap Day
-                        else if(startDate.getMonth() == 1 
-                            && startDate.getDate() == 29 
-                            && displaydays[i].getMonth() == 1
-                            && displaydays[i].getDate() == 28
-                            && maxDays[1] == 28){
+                        else if(startDate.getMonth() === 1 
+                            && startDate.getDate() === 29 
+                            && displaydays[i].getMonth() === 1
+                            && displaydays[i].getDate() === 28
+                            && maxDays[1] === 28){
                             addTask(task, i);              
                         }
                     }

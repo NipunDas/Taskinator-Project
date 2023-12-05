@@ -100,6 +100,16 @@ const CalWeek = (props) => {
         "November",
         "December"
     ];
+
+    //Obtaining Date Information
+    //Note: Assumes the date in the url is a valid date
+    let params = useParams();
+    var pstDate = params["newdate"] + " PST";
+    var [date, setDate] = useState(new Date(pstDate));
+    var month = date.getMonth();
+    var dayDate = date.getDate();
+    var year = date.getFullYear();
+
     const maxDays = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
     //Leap Year Calculation
     if (year % 4 === 0) {
@@ -115,15 +125,6 @@ const CalWeek = (props) => {
     } else {
         maxDays[1] = 28;
     }
-
-    //Obtaining Date Information
-    //Note: Assumes the date in the url is a valid date
-    let params = useParams();
-    var pstDate = params["newdate"] + " PST";
-    var [date, setDate] = useState(new Date(pstDate));
-    var month = date.getMonth();
-    var dayDate = date.getDate();
-    var year = date.getFullYear();
 
     // To indicate API call failed
     if (!tasks) {
@@ -181,7 +182,7 @@ const CalWeek = (props) => {
         var startDate = new Date(s.replace(/-/g, "/").replace("T", " "));
         //Ensure Task Is Actually A Part Of The Day
         if (sameDay(new Date(startDate), date)) addTask(task, startDate);
-        if(periodic != ""){
+        if(periodic !== ""){
             var periodic = task["periodic"];
             switch (periodic[0]) {
             //Daily
@@ -193,7 +194,7 @@ const CalWeek = (props) => {
             //Every Other Day
             case "O":
                 if(date > startDate 
-                    && Math.ceil((date.getTime() - startDate.getTime()) / (1000 * 3600 * 24)) % 2 == 0){
+                    && Math.ceil((date.getTime() - startDate.getTime()) / (1000 * 3600 * 24)) % 2 === 0){
                     addTask(task, startDate);                            
                 }
         
@@ -214,10 +215,10 @@ const CalWeek = (props) => {
             case "M":
                 if(date > startDate){
                     //In the case that the date is outside the range of the current month, place event at end of month
-                    if(startDate.getDate() > maxDays[date.getMonth()] && date.getDate() == maxDays[date.getMonth()] ){
+                    if(startDate.getDate() > maxDays[date.getMonth()] && date.getDate() === maxDays[date.getMonth()] ){
                         addTask(task, startDate);
                     }
-                    else if(date.getDate() == startDate.getDate()){
+                    else if(date.getDate() === startDate.getDate()){
                         addTask(task, startDate);
                     }
                 }
@@ -226,15 +227,15 @@ const CalWeek = (props) => {
                 //Every Year
             case "Y":
                 if(date > startDate){
-                    if(startDate.getDate() == date.getDate() && startDate.getMonth() == date.getMonth()){
+                    if(startDate.getDate() === date.getDate() && startDate.getMonth() === date.getMonth()){
                         addTask(task, startDate);
                     }
                     //Event On Leap Day
-                    else if(startDate.getMonth() == 1 
-                        && startDate.getDate() == 29 
-                        && date.getMonth() == 1
-                        && date.getDate() == 28
-                        && maxDays[1] == 28){
+                    else if(startDate.getMonth() === 1 
+                        && startDate.getDate() === 29 
+                        && date.getMonth() === 1
+                        && date.getDate() === 28
+                        && maxDays[1] === 28){
                         addTask(task, startDate);              
                     }
                 }
