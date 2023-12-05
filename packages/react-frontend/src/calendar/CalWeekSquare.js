@@ -72,16 +72,16 @@ const CalWeekSquare = (props) => {
     ];
 
     //Position and Time Inputs
-    const num = props.num;              //The Index of The Square
-    const date = props.date;            //Date The Square is Displaying
-    const calheight = props.calheight;  //Height of calendar
-    const width = props.width;          //Width of calendar square
+    const num = props.num; //The Index of The Square
+    const date = props.date; //Date The Square is Displaying
+    const calheight = props.calheight; //Height of calendar
+    const width = props.width; //Width of calendar square
     const xpos = props.x + width * num; //Position of calendar square
-    const ypos = props.y;               //Position of calendar square
-    const hourbegin = props.begin;      //Beginning Hour of Calendar
+    const ypos = props.y; //Position of calendar square
+    const hourbegin = props.begin; //Beginning Hour of Calendar
 
     //Create schedule background
-    const hourarray = props.hourarray;  
+    const hourarray = props.hourarray;
     const hourheight = props.hourheight;
     const totalhours = props.totalhours;
 
@@ -94,9 +94,9 @@ const CalWeekSquare = (props) => {
     const durations = props.durations;
     const descriptions = props.descriptions;
     const colors = props.colors;
-    var toMap;                          //Used for looping in Div
-    var hasevent = false;               //True if Day has any events
-    var percentduration;                //Used for calculating the event square's height on the calendar
+    var toMap; //Used for looping in Div
+    var hasevent = false; //True if Day has any events
+    var percentduration; //Used for calculating the event square's height on the calendar
 
     //If there are events to be displayed
     if (titles != null && titles.length > 0) {
@@ -207,7 +207,7 @@ const CalWeekSquare = (props) => {
                 ))}
 
             <div>
-                <Link to={"/day/" + linkString(date)}>
+                <Link to={"/calendar/day/" + linkString(date)}>
                     <button
                         style={{
                             background: "transparent",

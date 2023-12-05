@@ -3,8 +3,7 @@ import React, { useState } from "react";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import { Link } from "react-router-dom";
-
-const api_url = "https://taskinator-api.azurewebsites.net";
+import { API_URL } from "../Consts.js";
 
 function TheForm(props) {
     const [person, setPerson] = useState({
@@ -65,22 +64,16 @@ function TheForm(props) {
                 alert("Time conflict");
             } else {
                 try {
-                    const response = await fetch(
-                        `${api_url}/task-lists/65553647a73a1b75066a47ab/tasks`,
+                    await fetch(
+                        `${API_URL}/task-lists/${props.taskList}/tasks`,
                         {
                             method: "POST",
-                            headers: {
+                            headers: props.addHeader({
                                 "Content-Type": "application/json"
-                            },
+                            }),
                             body: JSON.stringify(person)
                         }
                     );
-                    if (response.status === 201) {
-                        const newUser = await response.json();
-                        props.handleSubmit(newUser);
-                    } else {
-                        console.error("Failed to add user");
-                    }
                 } catch (error) {
                     console.error("Error adding user:", error);
                 }
@@ -100,7 +93,9 @@ function TheForm(props) {
     };
 
     function fetchTasks() {
-        const promise = fetch(`${api_url}/task-lists/65553647a73a1b75066a47ab`);
+        const promise = fetch(`${API_URL}/task-lists/${props.taskList}`, {
+            headers: props.addHeader()
+        });
         return promise;
     }
 

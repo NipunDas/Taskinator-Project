@@ -30,6 +30,10 @@ Prettier into your editor, take a look at [this link](https://prettier.io/docs/e
 On VSCode specifically, you can configure the editor to format your code when saving by following
 the [instructions here](https://blog.yogeshchavan.dev/automatically-format-code-on-file-save-in-visual-studio-code-using-prettier).
 
+There are a lot of dependencies listed below in this README, and not all dependencies used in this project will be stated in this file. You can check the dependencies used for each workspace and the overall project by looking at the respective package.json files, but an easier way to make sure you have the latest versions of all dependencies is to run the following command:
+
+`npm update`
+
 # Installing Bootstrap
 
 You can install React-Bootstrap via npm or yarn (Install in the react-frontend package).

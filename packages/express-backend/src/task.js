@@ -31,6 +31,10 @@ const TaskListSchema = new mongoose.Schema(
                 duration: {
                     type: Number,
                     required: false
+                },
+                periodic: {
+                    type: String,
+                    required: false
                 }
             }
         ]

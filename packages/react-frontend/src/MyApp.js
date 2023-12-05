@@ -1,10 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import CalMonth from "./calendar/CalMonth";
 import CalWeek from "./calendar/CalWeek";
 import CalDay from "./calendar/CalDay";
 import MyAddTask from "./taskAdd/AddTask";
 import MyTaskList from "./taskList/TaskList";
+import Login from "./authPages/Login.js";
+import Signup from "./authPages/SignUp.js";
 const curdate = new Date();
 const curyear = curdate.getFullYear();
 const curmonth = curdate.getMonth() + 1;
@@ -27,11 +29,36 @@ Other Notes:
 There are many parts of each file that aren't used by the file and thus can be removed
 */
 function MyCalendar() {
+    const INVALID_TOKEN = "INVALID_TOKEN";
+    const [token, setToken] = useState(INVALID_TOKEN);
+    const [taskListId, setTaskListId] = useState("");
+
+    function addAuthHeader(otherHeaders = {}) {
+        if (token === INVALID_TOKEN) {
+            return otherHeaders;
+        } else {
+            return {
+                ...otherHeaders,
+                Authorization: `Bearer ${token}`
+            };
+        }
+    }
+
     return (
         <BrowserRouter>
             <Routes>
+                <Route path="/" element={<Navigate to="/login" />} />
                 <Route
-                    path="/"
+                    path="/login"
+                    element={
+                        <Login
+                            saveToken={setToken}
+                            setTaskListId={setTaskListId}
+                        />
+                    }
+                />
+                <Route
+                    path="calendar"
                     element={
                         <Navigate
                             replace
@@ -47,7 +74,7 @@ function MyCalendar() {
                     }
                 />
                 <Route
-                    path="week"
+                    path="calendar/week"
                     element={
                         <Navigate
                             replace
@@ -55,19 +82,17 @@ function MyCalendar() {
                         />
                     }
                 />
-                <Route path="week/:newdate" element={<CalWeek />} />
                 <Route
-                    path="month"
+                    path="calendar/week/:newdate"
                     element={
-                        <Navigate
-                            replace
-                            to={curyear + "-" + curmonth + "-" + curday}
+                        <CalWeek
+                            addHeader={addAuthHeader}
+                            taskList={taskListId}
                         />
                     }
                 />
-                <Route path="month/:newdate" element={<CalMonth />} />
                 <Route
-                    path="day"
+                    path="calendar/month"
                     element={
                         <Navigate
                             replace
@@ -75,9 +100,60 @@ function MyCalendar() {
                         />
                     }
                 />
-                <Route path="day/:newdate" element={<CalDay />} />
-                <Route path="taskList" element={<MyTaskList />} />
-                <Route path="taskAdd" element={<MyAddTask />} />
+                <Route
+                    path="calendar/month/:newdate"
+                    element={
+                        <CalMonth
+                            addHeader={addAuthHeader}
+                            taskList={taskListId}
+                        />
+                    }
+                />
+                <Route
+                    path="calendar/day"
+                    element={
+                        <Navigate
+                            replace
+                            to={curyear + "-" + curmonth + "-" + curday}
+                        />
+                    }
+                />
+                <Route
+                    path="calendar/day/:newdate"
+                    element={
+                        <CalDay
+                            addHeader={addAuthHeader}
+                            taskList={taskListId}
+                        />
+                    }
+                />
+                <Route
+                    path="taskList"
+                    element={
+                        <MyTaskList
+                            addHeader={addAuthHeader}
+                            taskList={taskListId}
+                        />
+                    }
+                />
+                <Route
+                    path="taskAdd"
+                    element={
+                        <MyAddTask
+                            addHeader={addAuthHeader}
+                            taskList={taskListId}
+                        />
+                    }
+                />
+                <Route
+                    path="signup"
+                    element={
+                        <Signup
+                            saveToken={setToken}
+                            setTaskListId={setTaskListId}
+                        />
+                    }
+                />
             </Routes>
         </BrowserRouter>
     );

@@ -30,6 +30,11 @@ function getUserById(id) {
     return userModel.findById(id);
 }
 
+/* Gets a user by their username */
+function getUserByUsername(username) {
+    return userModel.findOne({ username: username });
+}
+
 /* Gets a task list by its id */
 function getTaskListById(id) {
     return taskListModel.findById(id);
@@ -94,6 +99,7 @@ function editTask(taskList_id, task) {
 export default {
     getUsers,
     getUserById,
+    getUserByUsername,
     getTaskListById,
     instantiateUser,
     addTask,

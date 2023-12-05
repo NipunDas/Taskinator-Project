@@ -2,8 +2,7 @@ import React, { useState, useEffect } from "react";
 import CalendarSquare from "./CalMonthSquare";
 import { useParams, Link } from "react-router-dom";
 import { Button } from "react-bootstrap";
-
-const api_url = "https://taskinator-api.azurewebsites.net";
+import { API_URL } from "../Consts.js";
 
 /*
 Calendar Month
@@ -14,6 +13,25 @@ events1
 events2
 */
 const CalMonth = (props) => {
+    const taskList = props.taskList;
+    const addHeader = props.addHeader;
+
+    useEffect(() => {
+        function fetchTasks() {
+            const promise = fetch(`${API_URL}/task-lists/${taskList}`, {
+                headers: addHeader()
+            });
+            return promise;
+        }
+        fetchTasks()
+            .then((res) => res.json())
+            .then((json) => setTasks(json["tasks"]))
+            .catch((error) => {
+                console.log(error);
+                setTasks(null); // To indicate API call failed
+            });
+    }, [taskList, addHeader]);
+
     /* HELPER FUNCTIONS */
     //Increases or Decreases The Selected Month
     function IncreaseMonth(left) {
@@ -47,13 +65,6 @@ const CalMonth = (props) => {
         );
     }
 
-    //Obtains a list of tasks
-    //Note: Database is hardcoded currently, change to reflect user
-    function fetchTasks() {
-        const promise = fetch(`${api_url}/task-lists/65553647a73a1b75066a47ab`);
-        return promise;
-    }
-
     //Constants
     const [tasks, setTasks] = useState([]);
     const weekdays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
@@ -83,6 +94,11 @@ const CalMonth = (props) => {
     var month = firstdate.getMonth();
     var day = firstdate.getDay();
     var year = firstdate.getFullYear();
+
+    // To indicate API call failed
+    if (!tasks) {
+        return <caption>Data Unavailable</caption>;
+    }
 
     //Leap Year Calculation
     if (year % 4 === 0) {
@@ -162,15 +178,6 @@ const CalMonth = (props) => {
         }
     }
 
-    useEffect(() => {
-        fetchTasks()
-            .then((res) => res.json())
-            .then((json) => setTasks(json["tasks"]))
-            .catch((error) => {
-                console.log(error);
-            });
-    }, []);
-
     return (
         <div className="Main">
             <div
@@ -232,7 +239,11 @@ const CalMonth = (props) => {
 
             {[0, 1, 2, 3, 4, 5].map((num) => (
                 <div key={num}>
-                    <Link to={"/week/" + linkString(displaydays[num * 7])}>
+                    <Link
+                        to={
+                            "/calendar/week/" + linkString(displaydays[num * 7])
+                        }
+                    >
                         <button
                             style={{
                                 background: "#ADD8E6",

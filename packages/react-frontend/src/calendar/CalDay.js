@@ -2,8 +2,7 @@ import React, { useState, useEffect } from "react";
 import CalWeekSquare from "./CalWeekSquare";
 import { useParams, Link } from "react-router-dom";
 import Button from "react-bootstrap/esm/Button";
-
-const api_url = "https://taskinator-api.azurewebsites.net";
+import { API_URL } from "../Consts.js";
 
 /*
 Calendar Day 
@@ -18,6 +17,25 @@ colors = Color of the event on the calendar
 All arrays are assumed to be in same order
 */
 const CalWeek = (props) => {
+    const taskList = props.taskList;
+    const addHeader = props.addHeader;
+
+    useEffect(() => {
+        function fetchTasks() {
+            const promise = fetch(`${API_URL}/task-lists/${taskList}`, {
+                headers: addHeader()
+            });
+            return promise;
+        }
+        fetchTasks()
+            .then((res) => res.json())
+            .then((json) => setTasks(json["tasks"]))
+            .catch((error) => {
+                console.log(error);
+                setTasks(null); // To indicate API call failed
+            });
+    }, [taskList, addHeader]);
+
     //HELPER FUNCTIONS
     //Converts an hour (0-24) into a string (ie 0 to "12 AM")
     function hourtoString(num) {
@@ -50,14 +68,6 @@ const CalWeek = (props) => {
         );
     }
 
-    //Obtains a list of tasks
-    //Note: Database is hardcoded currently, change to reflect user
-    function fetchTasks() {
-        const promise = fetch(`${api_url}/task-lists/65553647a73a1b75066a47ab`);
-        console.log(promise);
-        return promise;
-    }
-
     //Constants
     const [tasks, setTasks] = useState([]);
     const months = [
@@ -83,6 +93,11 @@ const CalWeek = (props) => {
     var month = date.getMonth();
     var dayDate = date.getDate();
     var year = date.getFullYear();
+
+    // To indicate API call failed
+    if (!tasks) {
+        return <caption>Data Unavailable</caption>;
+    }
 
     //Design Parameters
     //Header
@@ -149,16 +164,6 @@ const CalWeek = (props) => {
         if (colorindex >= 7) colorindex = 0;
     }
 
-    useEffect(() => {
-        console.log("hi");
-        fetchTasks()
-            .then((res) => res.json())
-            .then((json) => setTasks(json["tasks"]))
-            .catch((error) => {
-                console.log(error);
-            });
-    }, []);
-
     return (
         <div className="Main">
             <div
@@ -220,7 +225,7 @@ const CalWeek = (props) => {
                 </button>
             </div>
             <div>
-                <Link to={"/week/" + linkString(date)}>
+                <Link to={"/calendar/week/" + linkString(date)}>
                     <button
                         style={{
                             background: "Black",
