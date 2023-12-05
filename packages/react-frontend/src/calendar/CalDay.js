@@ -68,6 +68,22 @@ const CalWeek = (props) => {
         );
     }
 
+    //Add Task
+    function addTask(task, addDate){
+        var y = 0;
+        //Find Open Space In The Array
+        while (titles[y] != null) {
+            y += 1;
+        }
+        titles[y] = task["name"];
+        times[y] = addDate.getHours() * 60 + addDate.getMinutes();
+        durations[y] = task["duration"];
+        descriptions[y] = task["description"];
+        colors[y] = samplecolors[colorindex];
+        colorindex += 1;
+        if (colorindex >= 7) colorindex = 0;
+    }
+
     //Constants
     const [tasks, setTasks] = useState([]);
     const months = [
@@ -93,6 +109,22 @@ const CalWeek = (props) => {
     var month = date.getMonth();
     var dayDate = date.getDate();
     var year = date.getFullYear();
+
+    const maxDays = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+    //Leap Year Calculation
+    if (year % 4 === 0) {
+        if (year % 100 === 0) {
+            if (year % 400 === 0) {
+                maxDays[1] = 29;
+            } else {
+                maxDays[1] = 28;
+            }
+        } else {
+            maxDays[1] = 29;
+        }
+    } else {
+        maxDays[1] = 28;
+    }
 
     // To indicate API call failed
     if (!tasks) {
@@ -149,19 +181,70 @@ const CalWeek = (props) => {
         //Converts UTC Date to Local Time
         var startDate = new Date(s.replace(/-/g, "/").replace("T", " "));
         //Ensure Task Is Actually A Part Of The Day
-        if (!sameDay(new Date(startDate), date)) continue;
-        var y = 0;
-        //Find Open Space In The Array
-        while (titles[y] != null) {
-            y += 1;
+        if (sameDay(new Date(startDate), date)) addTask(task, startDate);
+        var periodic = task["periodic"];
+        if(periodic != null && periodic !== ""){
+            switch (periodic[0]) {
+            //Daily
+            case "D":
+                if(date > startDate){
+                    addTask(task, startDate);
+                }
+                break;
+            //Every Other Day
+            case "O":
+                if(date > startDate 
+                    && Math.ceil((date.getTime() - startDate.getTime()) / (1000 * 3600 * 24)) % 2 === 0){
+                    addTask(task, startDate);                            
+                }
+        
+                break;
+            //Every Week
+            case "W":
+                var pWeekday = [];
+                for(let i = 1; i < periodic.length; i++){
+                    if(periodic[i] === "1")pWeekday.push(i - 1);
+                }
+                if(date > startDate 
+                    && pWeekday.includes(date.getDay())){
+                    addTask(task, startDate);
+                }
+            
+                break;
+            //Every Month
+            case "M":
+                if(date > startDate){
+                    //In the case that the date is outside the range of the current month, place event at end of month
+                    if(startDate.getDate() > maxDays[date.getMonth()] && date.getDate() === maxDays[date.getMonth()] ){
+                        addTask(task, startDate);
+                    }
+                    else if(date.getDate() === startDate.getDate()){
+                        addTask(task, startDate);
+                    }
+                }
+                
+                break;
+                //Every Year
+            case "Y":
+                if(date > startDate){
+                    if(startDate.getDate() === date.getDate() && startDate.getMonth() === date.getMonth()){
+                        addTask(task, startDate);
+                    }
+                    //Event On Leap Day
+                    else if(startDate.getMonth() === 1 
+                        && startDate.getDate() === 29 
+                        && date.getMonth() === 1
+                        && date.getDate() === 28
+                        && maxDays[1] === 28){
+                        addTask(task, startDate);              
+                    }
+                }
+                
+                break;
+            default:
+                break;
+            }
         }
-        titles[y] = task["name"];
-        times[y] = startDate.getHours() * 60 + startDate.getMinutes();
-        durations[y] = task["duration"];
-        descriptions[y] = task["description"];
-        colors[y] = samplecolors[colorindex];
-        colorindex += 1;
-        if (colorindex >= 7) colorindex = 0;
     }
 
     return (
