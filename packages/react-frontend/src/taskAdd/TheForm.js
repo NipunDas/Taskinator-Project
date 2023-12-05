@@ -205,6 +205,8 @@ function TheForm(props) {
             case "5":
                 periodicstr = "Y";
                 break;
+            default:
+                break;
         }
         return periodicstr;
 
