@@ -200,7 +200,7 @@ const CalWeek = (props) => {
             //Ensure Task Is Actually A Part Of The Day
             if (sameDay(new Date(startDate), datearr[i])) addTask(task, startDate, i);
             var periodic = task["periodic"];
-            if(periodic !== ""){
+            if(periodic != null && periodic !== ""){
                 switch (periodic[0]) {
                     //Daily
                     case "D":

@@ -183,7 +183,7 @@ const CalMonth = (props) => {
         }
         var periodic = task["periodic"];
         //Check Periodic Tasks
-        if(periodic !== ""){
+        if(periodic != null && periodic !== ""){
             switch (periodic[0]) {
             //Daily
             case "D":
