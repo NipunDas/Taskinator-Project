@@ -5,6 +5,7 @@ import Button from "react-bootstrap/Button";
 import { Link } from "react-router-dom";
 import DragAndDropComponent from "./Grid";
 import { API_URL } from "../Consts.js";
+import Filters from "./Filters";
 
 /* function postUser(person) {
     const promise = fetch(`${API_URL}/users`, {
@@ -50,8 +51,9 @@ function MyTaskList(props) {
     function removeTask(id) {
         deleteTask(id)
             .then((res) => {
-                if (res.status === 204) console.log("inside");
-                setUpdateList(!updateList);
+                if (res.status === 204) {
+                    setUpdateList(!updateList);
+                }
                 /*
                 Old code: just call the API again instead
                 tasks = tasks.filter((task, i) => task._id !== id);
@@ -119,7 +121,6 @@ function MyTaskList(props) {
 
     useEffect(() => {
         function fetchTasks() {
-            console.log("testinggggg");
             const promise = fetch(`${API_URL}/task-lists/${taskList}`, {
                 headers: addHeader()
             });
@@ -146,13 +147,7 @@ function MyTaskList(props) {
     return (
         <div>
             <h1 className="p-2">To Do List</h1>
-            <label htmlFor="filter">Filter</label>
-            <select name="filter" id="filter" onChange={filterTasks}>
-                <option value="All">All Items</option>
-                <option value="School">School</option>
-                <option value="Work">Work</option>
-                <option value="Personal">Personal</option>
-            </select>
+            <Filters tasks={tasks} filterTasks={filterTasks}></Filters>
             <DragAndDropComponent
                 taskData={filteredTasks}
                 updateTask={onTaskMove}

@@ -103,7 +103,7 @@ function SignupForm(props) {
                     <Form.Group controlId="formBasicDescription">
                         <Form.Label>Password</Form.Label>
                         <Form.Control
-                            type="text"
+                            type="password"
                             name="pwd"
                             placeholder="Enter password"
                             value={user.pwd}

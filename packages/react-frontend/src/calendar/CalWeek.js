@@ -4,15 +4,19 @@ import { useParams, Link } from "react-router-dom";
 import { Button } from "react-bootstrap";
 import { API_URL } from "../Consts.js";
 
-//To add events, place paramters in the following 2D Arrays
-//titles = Title of the event
-//times = Time of the event
-//durations = Duration of event (In minutes)
-//descriptions = Description of the event
-//colors = Color of the event on the calendar
-//
-//Each Entry Is An Array, so all of Sundays Events go In titles[0] etc
-//All arrays are assumed to be in same order
+/*
+Calendar Week
+
+To add events, place parameters in the following 2D arrays
+titles = Title of the event
+times = Time of the event
+durations = Duration of event (In minutes)
+descriptions = Description of the event
+colors = Color of the event on the calendar
+Each Entry Is An Array, so all of Sundays Events go In titles[0] etc
+All arrays are assumed to be in same order
+*/
+
 const CalWeek = (props) => {
     const [tasks, setTasks] = useState([]);
     const addHeader = props.addHeader;
@@ -56,12 +60,7 @@ const CalWeek = (props) => {
         return linkYear + "-" + linkMonth + "-" + linkDay;
     }
 
-    /*
-    function updateList(task) {
-        setTasks([...tasks, task]);
-    }
-    */
-
+    //Determines if two dates are the same
     function sameDay(d1, d2) {
         return (
             d1.getFullYear() === d2.getFullYear() &&
@@ -86,10 +85,9 @@ const CalWeek = (props) => {
         "November",
         "December"
     ];
-    const maxDays = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
 
     //Obtaining Date Information
-    //Note: Vulnerable to invalid dates
+    //Note: Assumes the date in the url is a valid date
     let params = useParams();
     var pstDate = params["newdate"] + " PST";
     var [date, setDate] = useState(new Date(pstDate));
@@ -103,29 +101,14 @@ const CalWeek = (props) => {
         return <caption>Data Unavailable</caption>;
     }
 
-    //Leap Year Calculation
-    if (year % 4 === 0) {
-        if (year % 100 === 0) {
-            if (year % 400 === 0) {
-                maxDays[1] = 29;
-            } else {
-                maxDays[1] = 28;
-            }
-        } else {
-            maxDays[1] = 29;
-        }
-    } else {
-        maxDays[1] = 28;
-    }
-
-    //Calculate Current Week
+    //Calculate currrent week
     var datearr = new Array(7);
     datearr[0] = new Date(year, month, dayDate - day);
     for (let i = 1; i < 7; i++) {
         datearr[i] = new Date(year, month, dayDate - day + i);
     }
-    console.info(datearr);
 
+    //Design Parameters
     //Header
     const headerx = 250;
     const headery = 25;
@@ -135,24 +118,26 @@ const CalWeek = (props) => {
     //Calendar Position
     const calendarx = 90;
     const calendary = 200;
+
+    //Hours and Time
     const hourbegin = 0; //What hour the weekly calendar begins at
     const hourend = 24; //What hour the weekly calendar ends at
-    const timewidth = 80;
-    // const daywidth = 160;
+    const hourwidth = 160; //Width of each hour block
+    const timewidth = 80; //Width of the left hour markers blocks
 
     //Create schedule background
     const totalhours = hourend - hourbegin;
     const forarray = new Array(totalhours);
-    for (let i = 0; i < totalhours; i++) {
+    for (var i = 0; i < totalhours; i++) {
         forarray[i] = i;
     }
 
     //Constant Calendar Height Code:
-    //const calendarheight = 1000;
+    //const calendarheight = 1000; //Height of total calendar
     //const hourheight = Math.floor(calendarheight / totalhours);
 
     //Constant Hour Height Code:
-    const hourheight = 75;
+    const hourheight = 75; //Height of each hour block
     const calendarheight = hourheight * totalhours;
 
     //Declare Event Arrays (2D Arrays)
@@ -170,25 +155,28 @@ const CalWeek = (props) => {
         colors[i] = [];
     }
 
-    /* ADD EVENT GET CODE */
+    //Find Events To Place In Calendar
     const samplecolors = ["red", "orange", "yellow", "green", "blue", "purple"];
-    /* ADD EVENT GET CODE */
     var colorindex = 0;
     for (let j = 0; j < tasks.length; j++) {
         for (let i = 0; i < 7; i++) {
             var task = tasks[j];
+            //Tasks without names or dates cannot be placed
             if (!task["name"] || !task["date"]) continue;
             var s = task["date"];
+            //Converts UTC Date to Local Time
             var startDate = new Date(s.replace(/-/g, "/").replace("T", " "));
+            //Ensure Task Is Actually A Part Of The Day
             if (!sameDay(new Date(startDate), datearr[i])) continue;
             var y = 0;
+            //Find Open Space In The Array
             while (titles[i][y] != null) {
                 y += 1;
             }
             titles[i][y] = task["name"];
             times[i][y] = startDate.getHours() * 60 + startDate.getMinutes();
             durations[i][y] = task["duration"];
-            descriptions[i][y] = task["desc"];
+            descriptions[i][y] = task["description"];
             colors[i][y] = samplecolors[colorindex];
             colorindex += 1;
             if (colorindex >= 7) colorindex = 0;
@@ -327,7 +315,7 @@ const CalWeek = (props) => {
                     x={calendarx}
                     y={calendary}
                     calheight={calendarheight}
-                    width={160}
+                    width={hourwidth}
                     hourarray={forarray}
                     hourheight={hourheight}
                     totalhours={totalhours}

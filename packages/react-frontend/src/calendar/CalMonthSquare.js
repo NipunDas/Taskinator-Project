@@ -33,18 +33,19 @@ const CalMonthSquare = (props) => {
 
     //Inputs
     const num = props.num; //Determines position of square
-    var isTop = false; //Determines if square is on top
+    var isTop = false; //Determines if square is on top to Display Weekday
     if (num < 7) isTop = true;
+
     //Calculates position of square based on calendar position and num
     const calendarx = props.cx;
     const calendary = props.cy;
     const x_pos = width * (num % 7) + calendarx;
     const y_pos = height * Math.floor(num / 7) + calendary;
 
-    //Thing to display
+    //Thing to display on header
     const date = props.date;
 
-    //Out of month days are greyed out
+    //Grey Out All Days Not In The Current Month
     var titlecolor = "white";
     if (props.month !== date.getMonth()) titlecolor = "#d3d3d3";
 

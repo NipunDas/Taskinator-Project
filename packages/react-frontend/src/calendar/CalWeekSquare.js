@@ -12,6 +12,53 @@ const CalWeekSquare = (props) => {
         return linkYear + "-" + linkMonth + "-" + linkDay;
     }
 
+    //Convert Time and Duration into Begin Time and End Time String For Displaying
+    function timeToString(num) {
+        const passedtime = times[num];
+        const passedduration = durations[num];
+        const passedendtime = passedtime + passedduration;
+
+        //Hours
+        var passedbeginhour = Math.floor(passedtime / 60);
+        var passedendhour = Math.floor(passedendtime / 60);
+        var beginAM = " AM";
+        var endAM = " AM";
+
+        //Minutes
+        var beginminutes = Math.floor(passedtime % 60);
+        if (beginminutes < 10) beginminutes = "0" + beginminutes;
+        var endminutes = Math.floor(passedendtime % 60);
+        if (endminutes < 10) endminutes = "0" + endminutes;
+
+        //Format hours
+        if (passedbeginhour === 0) passedbeginhour = 12;
+        else if (passedbeginhour > 12) {
+            passedbeginhour -= 12;
+            beginAM = " PM";
+        } else if (passedbeginhour === 12) {
+            beginAM = " PM";
+        }
+        if (passedendhour === 0) passedendhour = 12;
+        else if (passedendhour > 12) {
+            passedendhour -= 12;
+            endAM = " PM";
+        } else if (passedendhour === 12) {
+            endAM = " PM";
+        }
+
+        return (
+            passedbeginhour +
+            ":" +
+            beginminutes +
+            beginAM +
+            "-" +
+            passedendhour +
+            ":" +
+            endminutes +
+            endAM
+        );
+    }
+
     //Constants (Controls Width and Height of all calendar squares)
     const headerheight = 31;
     const weekdays = [
@@ -32,25 +79,25 @@ const CalWeekSquare = (props) => {
     const xpos = props.x + width * num; //Position of calendar square
     const ypos = props.y; //Position of calendar square
     const hourbegin = props.begin; //Beginning Hour of Calendar
-    // const hourend = props.end; //Ending Hour Of Calendar
 
     //Create schedule background
     const hourarray = props.hourarray;
     const hourheight = props.hourheight;
     const totalhours = props.totalhours;
 
-    //Event inputs
-    /*Note for Implementing With Backend
-	times and durations are assumed to be in minutes
+    /*
+    Event inputs
+    Note: Times and Durations are in minutes
 	*/
     const titles = props.titles;
     const times = props.times;
     const durations = props.durations;
     const descriptions = props.descriptions;
     const colors = props.colors;
-    var toMap;
-    var hasevent = false;
-    var percentduration;
+    var toMap; //Used for looping in Div
+    var hasevent = false; //True if Day has any events
+    var percentduration; //Used for calculating the event square's height on the calendar
+
     //If there are events to be displayed
     if (titles != null && titles.length > 0) {
         hasevent = true;
@@ -63,58 +110,6 @@ const CalWeekSquare = (props) => {
             toMap[i] = i;
             percentduration[i] = durations[i] / 60;
         }
-    }
-
-    //Trunacte Function
-    /*
-    function truncate(str, maxlength) {
-        if (str.length > maxlength) {
-            return str.slice(0, maxlength - 1) + "…";
-        } else return str;
-    }
-    */
-
-    //Depending On How Time Is Passed, This Function May Be Unnecessary
-    function timeToString(num) {
-        const passedtime = times[num];
-        const passedduration = durations[num];
-        const passedendtime = passedtime + passedduration;
-        //Hours
-        var passedbeginhour = Math.floor(passedtime / 60);
-        var passedendhour = Math.floor(passedendtime / 60);
-        var beginAM = " AM";
-        var endAM = " AM";
-        //Minutes
-        var beginminutes = Math.floor(passedtime % 60);
-        if (beginminutes < 10) beginminutes = "0" + beginminutes;
-        var endminutes = Math.floor(passedendtime % 60);
-        if (endminutes < 10) endminutes = "0" + endminutes;
-        //Format hours
-        if (passedbeginhour === 0) passedbeginhour = 12;
-        else if (passedbeginhour > 12) {
-            passedbeginhour -= 12;
-            beginAM = " PM";
-        } else if (passedbeginhour === 12) {
-            beginAM = " PM";
-        }
-        if (passedendhour === 0) passedendhour = 12;
-        else if (passedendhour > 12) {
-            passedendhour -= 12;
-            endAM = " PM";
-        } else if (passedendhour === 12) {
-            endAM = " PM";
-        }
-        return (
-            passedbeginhour +
-            ":" +
-            beginminutes +
-            beginAM +
-            "-" +
-            passedendhour +
-            ":" +
-            endminutes +
-            endAM
-        );
     }
 
     return (

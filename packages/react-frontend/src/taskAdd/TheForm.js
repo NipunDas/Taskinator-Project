@@ -23,39 +23,130 @@ function TheForm(props) {
         }));
     }
 
-    const submitForm = async () => {
-        try {
-            const response = await fetch(
-                `${API_URL}/task-lists/${props.taskList}/tasks`,
-                {
-                    method: "POST",
-                    headers: props.addHeader({
-                        "Content-Type": "application/json"
-                    }),
-                    body: JSON.stringify(person)
-                }
-            );
+    const onSave = () => {
+        // Check if name is given
+        if (person.name === "") {
+            alert("Please give a name for the task.");
+            return;
+        }
+        // Check if priority is selected
+        if (person.description === "") {
+            alert("Please give a description for the task.");
+            return;
+        }
+        // Check if priority is selected
+        if (person.priority === "") {
+            alert("Please select a priority for the task.");
+            return;
+        }
+        // Check if priority is selected
+        if (person.date === "") {
+            alert("Please select a date for the task.");
+            return;
+        }
+        // Check if priority is selected
+        if (person.duration === "") {
+            alert("Please select a duration for the task.");
+            return;
+        } else if (parseInt(person.duration) < 30) {
+            alert("PLease enter a longer duration.");
+            return;
+        }
+        submitForm();
+    };
 
-            if (response.status === 201) {
-                const newUser = await response.json();
-                props.handleSubmit(newUser);
+    const submitForm = async () => {
+        person.date = new Date(person.date);
+        try {
+            // Wait for the promise
+            const timeConflict = await validateTask();
+            if (timeConflict) {
+                alert("Time conflict");
             } else {
-                console.error("Failed to add user");
+                try {
+                    await fetch(
+                        `${API_URL}/task-lists/${props.taskList}/tasks`,
+                        {
+                            method: "POST",
+                            headers: props.addHeader({
+                                "Content-Type": "application/json"
+                            }),
+                            body: JSON.stringify(person)
+                        }
+                    );
+                } catch (error) {
+                    console.error("Error adding user:", error);
+                }
+                // Reset the form after submission
+                setPerson({
+                    name: "",
+                    description: "",
+                    priority: "",
+                    tags: "",
+                    date: "",
+                    duration: ""
+                });
             }
         } catch (error) {
-            console.error("Error adding user:", error);
+            console.error("Error during form submission", error);
         }
-
-        // Reset the form after submission
-        setPerson({
-            name: "",
-            description: "",
-            priority: "",
-            tags: "",
-            date: "",
-            duration: ""
-        });
     };
+
+    function fetchTasks() {
+        const promise = fetch(`${API_URL}/task-lists/${props.taskList}`, {
+            headers: props.addHeader()
+        });
+        return promise;
+    }
+
+    async function validateTask() {
+        try {
+            const res = await fetchTasks();
+            // Wait for the promise from res.json() to resolve
+            const json = await res.json();
+
+            if (!json.tasks || !Array.isArray(json.tasks)) {
+                return false;
+            }
+
+            const newTaskStartTime = new Date(person.date);
+            const newTaskEndTime = new Date(person.date);
+            newTaskEndTime.setMinutes(
+                newTaskEndTime.getMinutes() + parseInt(person.duration)
+            );
+
+            // Check if the new task goes past midnight
+            const midnight = new Date(newTaskStartTime);
+            midnight.setHours(24, 0, 0, 0);
+
+            if (newTaskEndTime > midnight) {
+                console.error("Task goes past midnight, not allowed.");
+                return true;
+            }
+
+            for (let task of json.tasks) {
+                if (task.date) {
+                    const taskStartTime = new Date(task.date);
+                    const taskEndTime = new Date(task.date);
+                    taskEndTime.setMinutes(
+                        taskEndTime.getMinutes() + parseInt(task.duration)
+                    );
+
+                    // Check for overlap with other tasks
+                    if (
+                        newTaskStartTime < taskEndTime &&
+                        newTaskEndTime > taskStartTime
+                    ) {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        } catch (error) {
+            console.error("Error in validateTask: ", error);
+            return false;
+        }
+    }
 
     return (
         <Form>
@@ -65,6 +156,7 @@ function TheForm(props) {
                     type="text"
                     name="name"
                     placeholder="Enter name"
+                    maxLength="20"
                     value={person.name}
                     onChange={handleChange}
                 />
@@ -76,6 +168,7 @@ function TheForm(props) {
                     type="text"
                     name="description"
                     placeholder="Enter description"
+                    maxLength="50"
                     value={person.description}
                     onChange={handleChange}
                 />
@@ -88,6 +181,7 @@ function TheForm(props) {
                     name="tags"
                     placeholder="Enter tags"
                     value={person.tags}
+                    maxLength="50"
                     onChange={handleChange}
                 />
             </Form.Group>
@@ -95,12 +189,16 @@ function TheForm(props) {
             <Form.Group controlId="formBasicPriority">
                 <Form.Label>Priority</Form.Label>
                 <Form.Control
-                    type="text"
+                    as="select"
                     name="priority"
-                    placeholder="Enter priority"
                     value={person.priority}
                     onChange={handleChange}
-                />
+                >
+                    <option value="">Select Priority</option>
+                    <option value="1">High</option>
+                    <option value="2">Medium</option>
+                    <option value="3">Low</option>
+                </Form.Control>
             </Form.Group>
 
             <Form.Group controlId="formBasicDate">
@@ -117,16 +215,18 @@ function TheForm(props) {
             <Form.Group controlId="formBasicDuration">
                 <Form.Label>Duration (In Minutes) </Form.Label>
                 <Form.Control
-                    type="text"
+                    type="number"
                     name="duration"
+                    step="1"
                     placeholder="Enter duration"
+                    maxLength="5"
                     value={person.duration}
                     onChange={handleChange}
                 />
             </Form.Group>
 
             <div style={{ marginBottom: "10px" }}>
-                <Button variant="primary" onClick={submitForm}>
+                <Button variant="primary" onClick={onSave}>
                     Submit
                 </Button>
             </div>
