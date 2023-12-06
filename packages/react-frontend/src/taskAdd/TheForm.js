@@ -156,11 +156,19 @@ function TheForm(props) {
     //Periodic State
     const [periodicState, setPeriodic] = useState("0");
     //Options for Checklist
-    const checkList = ["Every Sunday", "Every Monday", "Every Tuesday", "Every Wednesday", "Every Thursday", "Every Friday", "Every Saturday"];
+    const checkList = [
+        "Every Sunday",
+        "Every Monday",
+        "Every Tuesday",
+        "Every Wednesday",
+        "Every Thursday",
+        "Every Friday",
+        "Every Saturday"
+    ];
 
     const changePeriodic = (event) => {
         setPeriodic(event.target.value);
-    }
+    };
 
     var isChecked = (item) =>
         checked.includes(item) ? "checked-item" : "not-checked-item";
@@ -169,16 +177,16 @@ function TheForm(props) {
     const handleCheck = (event) => {
         var updatedList = [...checked];
         if (event.target.checked) {
-          updatedList = [...checked, event.target.value];
+            updatedList = [...checked, event.target.value];
         } else {
-          updatedList.splice(checked.indexOf(event.target.value), 1);
+            updatedList.splice(checked.indexOf(event.target.value), 1);
         }
         setChecked(updatedList);
     };
 
-    function createPeriodicity(){
+    function createPeriodicity() {
         var periodicstr = "";
-        switch(periodicState){
+        switch (periodicState) {
             case "0":
                 break;
             case "1":
@@ -189,15 +197,15 @@ function TheForm(props) {
                 break;
             case "3":
                 periodicstr = "W";
-                var checkarray = ["0", "0", "0", "0", "0", "0", "0",]
-                for(var i = 0; i < checked.length; i++){
-                    for(var j = 0; j < 7; j++){
-                        if(checked[i] === checkList[j]){
+                var checkarray = ["0", "0", "0", "0", "0", "0", "0"];
+                for (var i = 0; i < checked.length; i++) {
+                    for (var j = 0; j < 7; j++) {
+                        if (checked[i] === checkList[j]) {
                             checkarray[j] = "1";
                         }
                     }
                 }
-                periodicstr += checkarray.join('');
+                periodicstr += checkarray.join("");
                 break;
             case "4":
                 periodicstr = "M";
@@ -209,7 +217,6 @@ function TheForm(props) {
                 break;
         }
         return periodicstr;
-
     }
 
     return (
@@ -225,7 +232,6 @@ function TheForm(props) {
                     onChange={handleChange}
                 />
             </Form.Group>
-
             <Form.Group controlId="formBasicDescription">
                 <Form.Label>Description</Form.Label>
                 <Form.Control
@@ -237,7 +243,6 @@ function TheForm(props) {
                     onChange={handleChange}
                 />
             </Form.Group>
-
             <Form.Group controlId="formBasicTags">
                 <Form.Label>Tags</Form.Label>
                 <Form.Control
@@ -249,7 +254,6 @@ function TheForm(props) {
                     onChange={handleChange}
                 />
             </Form.Group>
-
             <Form.Group controlId="formBasicPriority">
                 <Form.Label>Priority</Form.Label>
                 <Form.Control
@@ -264,7 +268,6 @@ function TheForm(props) {
                     <option value="3">Low</option>
                 </Form.Control>
             </Form.Group>
-
             <Form.Group controlId="formBasicDate">
                 <Form.Label>Date</Form.Label>
                 <Form.Control
@@ -275,7 +278,6 @@ function TheForm(props) {
                     onChange={handleChange}
                 />
             </Form.Group>
-
             <Form.Group controlId="formBasicDuration">
                 <Form.Label>Duration (In Minutes) </Form.Label>
                 <Form.Control
@@ -288,31 +290,31 @@ function TheForm(props) {
                     onChange={handleChange}
                 />
             </Form.Group>
-
             Make Task Periodic (Repeat) <br />
             <select value={periodicState} onChange={changePeriodic}>
-                <option value = {0}>None</option>
-                <option value = {1}>Daily</option>
-                <option value = {2}>Every Other Day</option>
-                <option value = {3}>Weekly</option>
-                <option value = {4}>Monthly</option>
-                <option value = {5}>Yearly</option>
+                <option value={0}>None</option>
+                <option value={1}>Daily</option>
+                <option value={2}>Every Other Day</option>
+                <option value={3}>Weekly</option>
+                <option value={4}>Monthly</option>
+                <option value={5}>Yearly</option>
             </select>
-
             {periodicState === 3 && (
-            <div className="list-container">
-                {checkList.map((item, index) => (
-                <div key={index}>
-                    <input value={item} type="checkbox" onChange={handleCheck} />
-                    <span className={isChecked(item)}>{item}</span>
+                <div className="list-container">
+                    {checkList.map((item, index) => (
+                        <div key={index}>
+                            <input
+                                value={item}
+                                type="checkbox"
+                                onChange={handleCheck}
+                            />
+                            <span className={isChecked(item)}>{item}</span>
+                        </div>
+                    ))}
                 </div>
-                ))}
-            </div>
             )}
-
             <br />
             <br />
-
             <div style={{ marginBottom: "10px" }}>
                 <Button variant="primary" onClick={onSave}>
                     Submit

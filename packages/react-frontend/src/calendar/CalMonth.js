@@ -66,7 +66,7 @@ const CalMonth = (props) => {
     }
 
     //Add Task
-    function addTask(task, i){
+    function addTask(task, i) {
         if (!events0[i]) {
             events0[i] = task["name"];
             eventcolors0[i] = "red";
@@ -183,71 +183,95 @@ const CalMonth = (props) => {
         }
         var periodic = task["periodic"];
         //Check Periodic Tasks
-        if(periodic != null && periodic !== ""){
+        if (periodic != null && periodic !== "") {
             switch (periodic[0]) {
-            //Daily
-            case "D":
-                for(let i = 0; i < daysnum; i++){
-                    if(displaydays[i] > startDate){
-                        addTask(task, i);
+                //Daily
+                case "D":
+                    for (let i = 0; i < daysnum; i++) {
+                        if (displaydays[i] > startDate) {
+                            addTask(task, i);
+                        }
                     }
-                }
                     break;
-            //Every Other Day
-            case "O":
-                for(let i = 0; i < daysnum; i++){
-                    if(displaydays[i] > startDate 
-                        && Math.ceil((displaydays[i].getTime() - startDate.getTime()) / (1000 * 3600 * 24)) % 2 === 0){
-                        addTask(task, i);                            }
-                }
-                break;
-            //Every Week
-            case "W":
-                var pWeekday = [];
-                for(let i = 1; i < periodic.length; i++){
-                    if(periodic[i] === "1")pWeekday.push(i - 1);
-                }
-                for(let i = 0; i < daysnum; i++){
-                    if(displaydays[i] > startDate 
-                        && pWeekday.includes(displaydays[i].getDay())){
-                        addTask(task, i);
-                    }
-                }
-                break;
-            //Every Month
-            case "M":
-                for(let i = 0; i < daysnum; i++){
-                    if(displaydays[i] > startDate){
-                        //In the case that the date is outside the range of the current month, place event at end of month
-                        if(startDate.getDate() > maxDays[displaydays[i].getMonth()] && displaydays[i].getDate() === maxDays[displaydays[i].getMonth()] ){
-                            addTask(task, i);
-                        }
-                        else if(displaydays[i].getDate() === startDate.getDate()){
+                //Every Other Day
+                case "O":
+                    for (let i = 0; i < daysnum; i++) {
+                        if (
+                            displaydays[i] > startDate &&
+                            Math.ceil(
+                                (displaydays[i].getTime() -
+                                    startDate.getTime()) /
+                                    (1000 * 3600 * 24)
+                            ) %
+                                2 ===
+                                0
+                        ) {
                             addTask(task, i);
                         }
                     }
-                }
-                break;
-            //Every Year
-            case "Y":
-                for(let i = 0; i < daysnum; i++){
-                    if(displaydays[i] > startDate){
-                        if(startDate.getDate() === displaydays[i].getDate() && startDate.getMonth() === displaydays[i].getMonth()){
+                    break;
+                //Every Week
+                case "W":
+                    var pWeekday = [];
+                    for (let i = 1; i < periodic.length; i++) {
+                        if (periodic[i] === "1") pWeekday.push(i - 1);
+                    }
+                    for (let i = 0; i < daysnum; i++) {
+                        if (
+                            displaydays[i] > startDate &&
+                            pWeekday.includes(displaydays[i].getDay())
+                        ) {
                             addTask(task, i);
                         }
-                        //Event On Leap Day
-                        else if(startDate.getMonth() === 1 
-                            && startDate.getDate() === 29 
-                            && displaydays[i].getMonth() === 1
-                            && displaydays[i].getDate() === 28
-                            && maxDays[1] === 28){
-                            addTask(task, i);              
+                    }
+                    break;
+                //Every Month
+                case "M":
+                    for (let i = 0; i < daysnum; i++) {
+                        if (displaydays[i] > startDate) {
+                            //In the case that the date is outside the range of the current month, place event at end of month
+                            if (
+                                startDate.getDate() >
+                                    maxDays[displaydays[i].getMonth()] &&
+                                displaydays[i].getDate() ===
+                                    maxDays[displaydays[i].getMonth()]
+                            ) {
+                                addTask(task, i);
+                            } else if (
+                                displaydays[i].getDate() === startDate.getDate()
+                            ) {
+                                addTask(task, i);
+                            }
                         }
                     }
-                }
-                break;
-            default:
-                break;
+                    break;
+                //Every Year
+                case "Y":
+                    for (let i = 0; i < daysnum; i++) {
+                        if (displaydays[i] > startDate) {
+                            if (
+                                startDate.getDate() ===
+                                    displaydays[i].getDate() &&
+                                startDate.getMonth() ===
+                                    displaydays[i].getMonth()
+                            ) {
+                                addTask(task, i);
+                            }
+                            //Event On Leap Day
+                            else if (
+                                startDate.getMonth() === 1 &&
+                                startDate.getDate() === 29 &&
+                                displaydays[i].getMonth() === 1 &&
+                                displaydays[i].getDate() === 28 &&
+                                maxDays[1] === 28
+                            ) {
+                                addTask(task, i);
+                            }
+                        }
+                    }
+                    break;
+                default:
+                    break;
             }
         }
     }

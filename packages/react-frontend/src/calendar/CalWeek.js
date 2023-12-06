@@ -70,7 +70,7 @@ const CalWeek = (props) => {
     }
 
     //Add Task
-    function addTask(task, addDate, i){
+    function addTask(task, addDate, i) {
         var y = 0;
         //Find Open Space In The Array
         while (titles[i][y] != null) {
@@ -187,7 +187,15 @@ const CalWeek = (props) => {
     }
 
     //Find Events To Place In Calendar
-    const samplecolors = ["red", "orange", "yellow", "green", "blue", "purple", "pink"];
+    const samplecolors = [
+        "red",
+        "orange",
+        "yellow",
+        "green",
+        "blue",
+        "purple",
+        "pink"
+    ];
     var colorindex = 0;
     for (let j = 0; j < tasks.length; j++) {
         for (let i = 0; i < 7; i++) {
@@ -198,65 +206,86 @@ const CalWeek = (props) => {
             //Converts UTC Date to Local Time
             var startDate = new Date(s.replace(/-/g, "/").replace("T", " "));
             //Ensure Task Is Actually A Part Of The Day
-            if (sameDay(new Date(startDate), datearr[i])) addTask(task, startDate, i);
+            if (sameDay(new Date(startDate), datearr[i]))
+                addTask(task, startDate, i);
             var periodic = task["periodic"];
-            if(periodic != null && periodic !== ""){
+            if (periodic != null && periodic !== "") {
                 switch (periodic[0]) {
                     //Daily
                     case "D":
-                        if(datearr[i] > startDate){
+                        if (datearr[i] > startDate) {
                             addTask(task, startDate, i);
                         }
                         break;
                     //Every Other Day
                     case "O":
-                        if(datearr[i] > startDate 
-                            && Math.ceil((datearr[i].getTime() - datearr[i].getTime()) / (1000 * 3600 * 24)) % 2 === 0){
-                            addTask(task, startDate, i);                            
+                        if (
+                            datearr[i] > startDate &&
+                            Math.ceil(
+                                (datearr[i].getTime() - datearr[i].getTime()) /
+                                    (1000 * 3600 * 24)
+                            ) %
+                                2 ===
+                                0
+                        ) {
+                            addTask(task, startDate, i);
                         }
-                
+
                         break;
                     //Every Week
                     case "W":
                         var pWeekday = [];
-                        for(let i = 1; i < periodic.length; i++){
-                            if(periodic[i] === "1")pWeekday.push(i - 1);
+                        for (let i = 1; i < periodic.length; i++) {
+                            if (periodic[i] === "1") pWeekday.push(i - 1);
                         }
-                        if(datearr[i] > startDate 
-                            && pWeekday.includes(datearr[i].getDay())){
+                        if (
+                            datearr[i] > startDate &&
+                            pWeekday.includes(datearr[i].getDay())
+                        ) {
                             addTask(task, startDate, i);
                         }
-                    
+
                         break;
                     //Every Month
                     case "M":
-                        if(datearr[i] > startDate){
+                        if (datearr[i] > startDate) {
                             //In the case that the date is outside the range of the current month, place event at end of month
-                            if(startDate.getDate() > maxDays[datearr[i].getMonth()] && datearr[i].getDate() === maxDays[datearr[i].getMonth()] ){
+                            if (
+                                startDate.getDate() >
+                                    maxDays[datearr[i].getMonth()] &&
+                                datearr[i].getDate() ===
+                                    maxDays[datearr[i].getMonth()]
+                            ) {
                                 addTask(task, startDate, i);
-                            }
-                            else if(datearr[i].getDate() === startDate.getDate()){
+                            } else if (
+                                datearr[i].getDate() === startDate.getDate()
+                            ) {
                                 addTask(task, startDate, i);
                             }
                         }
-                        
+
                         break;
-                        //Every Year
+                    //Every Year
                     case "Y":
-                        if(datearr[i] > startDate){
-                            if(startDate.getDate() === datearr[i].getDate() && startDate.getMonth() === datearr[i].getMonth()){
+                        if (datearr[i] > startDate) {
+                            if (
+                                startDate.getDate() === datearr[i].getDate() &&
+                                startDate.getMonth() === datearr[i].getMonth()
+                            ) {
                                 addTask(task, startDate, i);
                             }
                             //Event On Leap Day
-                            else if(startDate.getMonth() === 1 
-                                && startDate.getDate() === 29 
-                                && datearr[i].getMonth() === 1
-                                && datearr[i].getDate() === 28
-                                && maxDays[1] === 28){
-                                addTask(task, startDate, i);              
+                            else if (
+                                startDate.getMonth() === 1 &&
+                                startDate.getDate() === 29 &&
+                                datearr[i].getMonth() === 1 &&
+                                datearr[i].getDate() === 28 &&
+                                maxDays[1] === 28
+                            ) {
+                                addTask(task, startDate, i);
                             }
                         }
-                        
+
                         break;
                     default:
                         break;
