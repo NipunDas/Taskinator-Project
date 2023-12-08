@@ -1,6 +1,7 @@
 # Taskinator-Project
 
 Taskinator is a To-Do list web application created for the CSC 307 Software Engineering class.
+Taskinator allows users to create tasks with fields including a title description priority tags date and duration. These tasks can be sorted based on priority and tags. Tasks can be dragged around to switch priority and can also be deleted from the task list page. The tasks are also accurately represented in a calendar with accurate dates.
 
 # Important Links
 
@@ -56,7 +57,7 @@ To host the backend server locally, you will need to connect to the cloud databa
 
 CORS is a required dependency for the front end to access the cloud database. Run this command on the root of the project to install
 
-`npm instsall cors`
+`npm install cors`
 
 # Installing React Router
 
