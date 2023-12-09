@@ -57,8 +57,7 @@ Backend API routes are documented in the [Backend.md]() file under the express-b
 
 # UI Prototype
 
-Here is the [link](https://www.figma.com/file/0qjYsQfQd4AnZRIzev1sJd/Untitled?type=design&node-id=0%3A1&
-mode=design&t=2kch2TmWeG3cMtrv-1) to the UI prototype for this project, designed in Figma.
+Here is the [link](https://www.figma.com/file/0qjYsQfQd4AnZRIzev1sJd/Untitled?type=design&node-id=0%3A1&mode=design&t=2kch2TmWeG3cMtrv-1) to the UI prototype for this project, designed in Figma.
 
 # UML Class Diagram
 
