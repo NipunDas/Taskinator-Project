@@ -19,7 +19,7 @@ async function connectToMongo(uri) {
 
 // connectiong to MongoDB
 await connectToMongo(process.env.MONGODB_URI);
-console.log(process.env.MONGODB_URI);
+console.log(process.env.MONGODB_URI.length);
 
 /* Gets all users */
 function getUsers(name) {
