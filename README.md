@@ -53,7 +53,7 @@ There are a lot of dependencies listed below in this README, and not all depende
 
 [Backend API Link](https://taskinator-api.azurewebsites.net)
 
-Backend API routes are documented in the [Backend.md]() file under the express-backend workspace.
+Backend API routes are documented in the [Backend.md](https://github.com/NipunDas/Taskinator-Project/blob/main/packages/express-backend/Backend.md) file under the express-backend workspace.
 
 # UI Prototype
 
@@ -61,12 +61,12 @@ Here is the [link](https://www.figma.com/file/0qjYsQfQd4AnZRIzev1sJd/Untitled?ty
 
 # UML Class Diagram
 
-Here is the [link]() to the UML class diagram, which documents how persistent data is stored on the
+Here is the [link](https://github.com/NipunDas/Taskinator-Project/blob/main/docs/UML_Class_Diagram.md) to the UML class diagram, which documents how persistent data is stored on the
 backend.
 
 # Authentication
 
-Here is the [link]() to the backend authentication sequence diagram, which outlines how authentication
+Here is the [link](https://github.com/NipunDas/Taskinator-Project/blob/main/docs/Authentication.md) to the backend authentication sequence diagram, which outlines how authentication
 is done for this app.
 
 # Connecting to the cloud database
