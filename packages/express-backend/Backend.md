@@ -4,8 +4,20 @@ See instructions in the README.md file in the root of this project for setting u
 
 `npx nodemon src/backend.js`
 
-The following routes can be used to create and manipulate users/tasklists (on
-top of the base URL http://localhost:3000):
+The following routes can be used to create and manipulate users/tasklists (on top of the base URL
+http://localhost:3000 or the deployed API on Azure). Note that all routes besides /signup and /login
+are protected since they contain sensitive user data, and the generated JWT token returned by the signup
+or login routes is needed to access any other routes.
+
+`POST /signup`
+
+Creates a new user by registering them. The request body must specify the user's name, username, and
+password. Responds with a JWT token upon success, which can be used to access protected routes.
+
+`POST /login`
+
+Attempts to log in an existing user. The request body must specify the user's name and password. Responds
+with a JWT token upon success, which can be used to access protected routes.
 
 `GET /users`
 
