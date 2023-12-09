@@ -7,3 +7,5 @@ store the task lists in a separate collection and record a reference to them in 
 rather than embedding the task list in the user schema.
 
 Last updated: December 8th, 2023
+
+![UML Class Diagram](https://github.com/NipunDas/Taskinator-Project/blob/main/docs/Project_Diagram.png?raw=true)
