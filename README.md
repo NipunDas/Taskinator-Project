@@ -6,7 +6,7 @@ all of their tasks. Taskinator accomplishes this through a combination of a To-D
 The app allows users to create tasks with fields such as title, description, priority, tags, date, and
 duration. These tasks are sorted by priority, and custom filters are provided through tags. Tasks can
 also be dragged around to switch priority and can also be deleted from the task list page. Additionally,
-since many events and tasks occur on a periodic basis (ex. every Monday or Wednesday, or every other
+since many events and tasks occur on a periodic basis (ex. every Monday and Wednesday, or every other
 day), the app allows for users to specify task periodicity, which conveniently displays on the calendar.
 
 # Delevopment Environment Setup
@@ -68,6 +68,17 @@ backend.
 
 Here is the [link](https://github.com/NipunDas/Taskinator-Project/blob/main/docs/Authentication.md) to the backend authentication sequence diagram, which outlines how authentication
 is done for this app.
+
+# Testing
+
+We have implemented tests using Jest for the backend. These tests do not test API routes or authentication functions, but CRUD operations with MongoDB. The tests, located 
+under the tests folder in the backend soruce code, run as a part of the GitHub workflow on the main branch, and you can run them yourself with the following command:
+
+`npm run -w express-backend test`
+
+You can also get a report the coverage of the tests by running the following command:
+
+`npm run -w express-backend coverage`
 
 # Connecting to the cloud database
 
