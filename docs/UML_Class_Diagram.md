@@ -8,4 +8,4 @@ rather than embedding the task list in the user schema.
 
 Last updated: December 8th, 2023
 
-![UML Class Diagram]([https://github.com/NipunDas/Taskinator-Project/blob/main/docs/Project_Diagram.png](https://github.com/NipunDas/Taskinator-Project/blob/main/docs/images/Project_Diagram.png)https://github.com/NipunDas/Taskinator-Project/blob/main/docs/images/Project_Diagram.png?raw=true)
+![UML Class Diagram](https://github.com/NipunDas/Taskinator-Project/blob/main/docs/images/Project_Diagram.png?raw=true)
