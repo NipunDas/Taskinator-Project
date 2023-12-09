@@ -7,12 +7,18 @@ dotenv.config();
 
 mongoose.set("debug", true);
 
-mongoose
-    .connect(process.env.MONGODB_URI, {
-        useNewUrlParser: true,
-        useUnifiedTopology: true
-    })
-    .catch((error) => console.log(error));
+/* connect function */
+async function connectToMongo(uri) {
+    await mongoose
+        .connect(uri, {
+            useNewUrlParser: true,
+            useUnifiedTopology: true
+        })
+        .catch((error) => console.log(error));
+}
+
+// connectiong to MongoDB
+await connectToMongo(process.env.MONGODB_URI);
 
 /* Gets all users */
 function getUsers(name) {
@@ -97,6 +103,7 @@ function editTask(taskList_id, task) {
 }
 
 export default {
+    connectToMongo,
     getUsers,
     getUserById,
     getUserByUsername,
