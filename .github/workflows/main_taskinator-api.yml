@@ -11,6 +11,8 @@ on:
 
 jobs:
     build:
+        env:
+            MONGODB_URI: ${{ secrets.MONGODB_URI }}
         runs-on: ubuntu-latest
 
         steps:
